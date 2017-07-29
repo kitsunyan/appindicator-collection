@@ -1,0 +1,32 @@
+#!/bin/bash
+
+names=(`dbus-send \
+	--print-reply \
+	--session \
+	--dest=org.kde.StatusNotifierWatcher \
+	/StatusNotifierWatcher \
+	org.freedesktop.DBus.Properties.GetAll \
+	string:org.kde.StatusNotifierWatcher |
+	grep -Pzo 'RegisteredStatusNotifierItems[\S\s]*\[[\S\s]*?\]' |
+	xargs -0 |
+	grep string |
+	grep -Po '(?<=").*(?=")'`)
+
+i=0
+for f in "${names[@]}"; do
+	echo "$i" "$f"
+	i=$(($i+1))
+done
+read -p 'Enter service number: ' service
+
+[ -n "$service" ] && {
+	service="${names[$service]}"
+	[ -n "$service" ] && {
+		dbus-send \
+			--print-reply \
+			--session \
+			--dest=`sed 's/\// \//' <<< "$service"` \
+			org.freedesktop.DBus.Properties.GetAll \
+			string:org.kde.StatusNotifierItem
+	}
+}
