@@ -9,9 +9,9 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 enabled=
 AC_DEFUN([AI_ENABLE], [
-	AC_ARG_ENABLE([$1], AC_HELP_STRING([--enable-$1],
-		[Enable $1 support]), [], [enable_$1=no])
-	if test x"$enable_$1" == x"yes"; then
+	AC_ARG_ENABLE([$1], AC_HELP_STRING([--enable-$1], [Enable $1 support]), [], [])
+	if test x"$enable_$1" == x"yes" ||
+		{ test x"$enable_all" == x"yes" && ! test x"$enable_$1" == x"no"; }; then
 		enabled="$enabled $1"
 		AM_CONDITIONAL([ENABLE_$2], [true])
 	else
