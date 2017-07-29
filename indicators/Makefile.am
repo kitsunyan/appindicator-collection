@@ -1,3 +1,7 @@
+AM_CPPFLAGS = \
+	-I${top_srcdir} \
+	$(PLATFORM_CPPFLAGS)
+
 installdir = \
 	$(libdir)
 
