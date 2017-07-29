@@ -12,6 +12,13 @@ In order to enable modifications, you should run your application with `LD_PRELO
 
 For example: `LD_PRELOAD=/usr/local/lib/libappindicator-hexchat.so hexchat`.
 
+## Patch for Application Indicators
+
+Optionally you can patch your libappindicator package with `libappindicator-activate.patch` patch from `tools` directory.
+This patch adds `activate` action support so left click will open the application instead of the menu.
+
+Note that this feature may be not supported by your desktop environment.
+
 ## Supported Applications
 
 ### Electron Applications

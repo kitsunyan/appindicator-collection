@@ -3,11 +3,12 @@
 
 #define _GNU_SOURCE 1
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <ctype.h>
-#include <string.h>
+#include <config.h>
 #include <dlfcn.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 extern int preload_debug;
 extern int local_dlsym;

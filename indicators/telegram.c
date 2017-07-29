@@ -37,8 +37,13 @@ typedef struct {
 static void update_activation(IndicatorStorage * storage) {
 	gboolean shown = gtk_widget_get_sensitive(storage->item_hide);
 	debug("update activation %d", shown);
+#if HAVE_ACTIVATION
+	app_indicator_set_activate_target(storage->indicator,
+		shown ? storage->item_hide : storage->item_show);
+#else
 	app_indicator_set_secondary_activate_target(storage->indicator,
 		shown ? storage->item_hide : storage->item_show);
+#endif
 }
 
 typedef struct {
@@ -77,6 +82,9 @@ void app_indicator_set_menu(AppIndicator * self, GtkMenu * menu) {
 	loop->handler = g_idle_add(setup_activation, loop);
 	g_object_weak_ref(G_OBJECT(menu), (GWeakNotify) g_source_remove,
 		GUINT_TO_POINTER(loop->handler));
+#if HAVE_ACTIVATION
+	app_indicator_set_item_is_menu(self, FALSE);
+#endif
 }
 
 void * dlsym_override(const char * symbol) {
