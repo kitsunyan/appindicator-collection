@@ -28,7 +28,59 @@ void app_indicator_set_icon_full(AppIndicator * self, const gchar * icon_name, c
 	g_free(text);
 }
 
+typedef struct {
+	AppIndicator * indicator;
+	GtkWidget * item_show;
+	GtkWidget * item_hide;
+} IndicatorStorage;
+
+static void update_activation(IndicatorStorage * storage) {
+	gboolean shown = gtk_widget_get_sensitive(storage->item_hide);
+	debug("update activation %d", shown);
+	app_indicator_set_secondary_activate_target(storage->indicator,
+		shown ? storage->item_hide : storage->item_show);
+}
+
+typedef struct {
+	AppIndicator * indicator;
+	GtkMenu * menu;
+	guint handler;
+} MenuLoop;
+
+static gboolean setup_activation(gpointer user_data) {
+	MenuLoop * loop = user_data;
+	GList * list = gtk_container_get_children(GTK_CONTAINER(loop->menu));
+	if (list != NULL) {
+		IndicatorStorage * storage = g_new0(IndicatorStorage, 1);
+		storage->indicator = loop->indicator;
+		storage->item_show = list->data;
+		storage->item_hide = list->next->data;
+		g_object_weak_ref(G_OBJECT(storage->indicator), (GWeakNotify) g_free, storage);
+		g_list_free(list);
+		g_object_weak_unref(G_OBJECT(loop->menu), (GWeakNotify) g_source_remove,
+			GUINT_TO_POINTER(loop->handler));
+		g_free(loop);
+		g_signal_connect_swapped(storage->item_hide, "notify::sensitive",
+			G_CALLBACK(update_activation), storage);
+		update_activation(storage);
+		return G_SOURCE_REMOVE;
+	}
+	return G_SOURCE_CONTINUE;
+}
+
+void app_indicator_set_menu(AppIndicator * self, GtkMenu * menu) {
+	super_lookup_static(app_indicator_set_menu, void, AppIndicator *, GtkMenu *);
+	app_indicator_set_menu_super(self, menu);
+	MenuLoop * loop = g_new0(MenuLoop, 1);
+	loop->indicator = self;
+	loop->menu = menu;
+	loop->handler = g_idle_add(setup_activation, loop);
+	g_object_weak_ref(G_OBJECT(menu), (GWeakNotify) g_source_remove,
+		GUINT_TO_POINTER(loop->handler));
+}
+
 void * dlsym_override(const char * symbol) {
 	dlsym_compare(app_indicator_set_icon_full);
+	dlsym_compare(app_indicator_set_menu);
 	return NULL;
 }
