@@ -5,22 +5,39 @@
 
 #define pass_args(...) __VA_ARGS__
 
-#define def_override_void(function, args, call, source) \
+#define def_override_void(function, args, call, source, extra) \
 void function(args) { \
 	super_lookup_static(function, void, args); \
 	gchar * new_icon_name = create_icon_name(source, icon_name); \
 	function##_super(call); \
 	g_free(new_icon_name); \
+	extra; \
 }
 
-#define def_override(function, result, args, call, source) \
+#define def_override(function, result, args, call, source, extra) \
 result function(args) { \
 	super_lookup_static(function, result, args); \
 	gchar * new_icon_name = create_icon_name(source, icon_name); \
 	result res = function##_super(call); \
 	g_free(new_icon_name); \
+	extra; \
 	return res; \
 }
+
+static gboolean menu_head_is_activate() {
+	const gchar * menu_head_activate = getenv("ELECTRON_MENU_HEAD_ACTIVATE");
+	return menu_head_activate != NULL && strlen(menu_head_activate) > 0;
+}
+
+#if HAVE_ACTIVATION
+static void apply_head_is_activate(AppIndicator * self) {
+	if (menu_head_is_activate()) {
+		app_indicator_set_item_is_menu(self, FALSE);
+	}
+}
+#else
+#define apply_head_is_activate(ignore)
+#endif
 
 static gchar * create_icon_name(AppIndicator * self,
 	const gchar * id, const gchar * theme_path, const gchar * icon_name) {
@@ -78,32 +95,48 @@ static gchar * create_icon_name(AppIndicator * self,
 def_override(app_indicator_new, AppIndicator *,
 	pass_args(const gchar *id, const gchar *icon_name, AppIndicatorCategory category),
 	pass_args(id, new_icon_name, category),
-	pass_args(NULL, id, NULL))
+	pass_args(NULL, id, NULL), apply_head_is_activate(res));
 
 def_override(app_indicator_new_with_path, AppIndicator *,
 	pass_args(const gchar *id, const gchar *icon_name, AppIndicatorCategory category, const gchar *icon_theme_path),
 	pass_args(id, new_icon_name, category, icon_theme_path),
-	pass_args(NULL, id, icon_theme_path))
+	pass_args(NULL, id, icon_theme_path), apply_head_is_activate(res));
 
 def_override_void(app_indicator_set_icon,
 	pass_args(AppIndicator * self, const gchar * icon_name),
 	pass_args(self, new_icon_name),
-	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)))
+	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)), {});
 
 def_override_void(app_indicator_set_icon_full,
 	pass_args(AppIndicator * self, const gchar * icon_name, const gchar * icon_desc),
 	pass_args(self, new_icon_name, NULL),
-	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)))
+	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)), {});
 
 def_override_void(app_indicator_set_attention_icon,
 	pass_args(AppIndicator * self, const gchar * icon_name),
 	pass_args(self, new_icon_name),
-	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)))
+	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)), {});
 
 def_override_void(app_indicator_set_attention_icon_full,
 	pass_args(AppIndicator * self, const gchar * icon_name, const gchar * icon_desc),
 	pass_args(self, new_icon_name, NULL),
-	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)))
+	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)), {});
+
+void app_indicator_set_menu(AppIndicator * self, GtkMenu * menu) {
+	super_lookup_static(app_indicator_set_menu, void, AppIndicator *, GtkMenu *);
+	app_indicator_set_menu_super(self, menu);
+	if (menu != NULL && menu_head_is_activate()) {
+		GList * list = gtk_container_get_children(GTK_CONTAINER(menu));
+		if (list != NULL) {
+#if HAVE_ACTIVATION
+			app_indicator_set_activate_target(self, list->data);
+#else
+			app_indicator_set_secondary_activate_target(self, list->data);
+#endif
+			g_list_free(list);
+		}
+	}
+}
 
 void * dlsym_override(const char * symbol) {
 	dlsym_compare(app_indicator_new);
@@ -112,5 +145,6 @@ void * dlsym_override(const char * symbol) {
 	dlsym_compare(app_indicator_set_icon_full);
 	dlsym_compare(app_indicator_set_attention_icon);
 	dlsym_compare(app_indicator_set_attention_icon);
+	dlsym_compare(app_indicator_set_menu);
 	return NULL;
 }

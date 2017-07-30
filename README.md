@@ -30,7 +30,10 @@ A hash sum is computed for each icon and appended to icon name. This allows you 
 
 In order to get icon name use `sni-print` shell script from `tools` directory.
 
-`ELECTRON_APPINDICATOR_TITLE` is optional environment variable which replaces the title of indicator.
+Environment variables:
+
+- `ELECTRON_APPINDICATOR_TITLE` — allows to replace indicator title.
+- `ELECTRON_MENU_HEAD_ACTIVATE` — first menu item will be used for `activate` action.
 
 ### HexChat
 
