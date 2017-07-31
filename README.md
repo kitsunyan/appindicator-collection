@@ -35,6 +35,22 @@ Environment variables:
 - `ELECTRON_APPINDICATOR_TITLE` — allows to replace indicator title.
 - `ELECTRON_MENU_HEAD_ACTIVATE` — first menu item will be used for `activate` action.
 
+### Gajim
+
+Configure flag: `--enable-gajim`.  
+Shared library: `libappindicator-gajim.so`.
+
+This patch replaces system tray icon with application indicator.
+
+The following icon names are used:
+
+- `gajim-tray-[status]` — regular icon for specific `[status]`.
+- `gajim-tray-[status]-highlight` — highlight icon for specific `[status]`.
+
+`[status]` can take the following values:
+`away`, `chat`, `connecting`, `dnd`, `error`, `invisible`, `offline`, `online`, `xa`.  
+For example: `gajim-tray-online-highlight`.
+
 ### HexChat
 
 Configure flag: `--enable-hexchat`.  

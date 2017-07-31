@@ -47,6 +47,29 @@ libappindicator_electron_gtk3_la_LDFLAGS = \
 
 endif
 
+if ENABLE_GAJIM
+
+install_LTLIBRARIES += \
+	libappindicator-gajim.la
+
+libappindicator_gajim_la_SOURCES = \
+	gajim.c
+
+libappindicator_gajim_la_CFLAGS = \
+	$(APP_INDICATOR_GTK2_CFLAGS)
+
+libappindicator_gajim_la_LIBADD = \
+	$(top_builddir)/common/libcommon.la \
+	$(APP_INDICATOR_GTK2_LIBS)
+
+libappindicator_gajim_la_LDFLAGS = \
+	-avoid-version \
+	-module \
+	-no-undefined \
+	$(PLATFORM_LDFLAGS)
+
+endif
+
 if ENABLE_HEXCHAT
 
 install_LTLIBRARIES += \
