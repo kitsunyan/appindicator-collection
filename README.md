@@ -12,10 +12,9 @@ In order to enable modifications, you should run your application with `LD_PRELO
 
 For example: `LD_PRELOAD=/usr/local/lib/libappindicator-hexchat.so hexchat`.
 
-## Patch for Application Indicators
+## Left-Click Activation
 
-Optionally you can patch your libappindicator package with `libappindicator-activate.patch` patch from `tools` directory.
-This patch adds `activate` action support so left click will open the application instead of the menu.
+Optionally you can override some indicator methods to allow left-click activation using `--with-activate` configure option.
 
 Note that this feature may be not supported by your desktop environment.
 

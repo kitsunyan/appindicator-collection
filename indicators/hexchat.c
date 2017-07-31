@@ -1,7 +1,7 @@
 #define DEBUG_NAME "HEXCHAT"
 
 #include <common/common.h>
-#include <libappindicator/app-indicator.h>
+#include <common/appindicator.h>
 
 #define ICON_NAME_NORMAL "hexchat-tray"
 #define ICON_NAME_NEW "hexchat-tray-new"
@@ -141,11 +141,7 @@ static void hexchat_icon_set_menu(HexchatIcon * icon) {
 		g_object_ref(menu);
 		app_indicator_set_menu(icon->indicator, menu);
 		GList * list = gtk_container_get_children(GTK_CONTAINER(menu));
-#if HAVE_ACTIVATION
-		app_indicator_set_activate_target(icon->indicator, list != NULL ? list->data : NULL);
-#else
 		app_indicator_set_secondary_activate_target(icon->indicator, list != NULL ? list->data : NULL);
-#endif
 		g_list_free(list);
 		gtk_container_foreach(GTK_CONTAINER(menu), hexchat_icon_set_menu_foreach, icon);
 	}
@@ -176,9 +172,7 @@ GtkStatusIcon * gtk_status_icon_new_from_pixbuf(GdkPixbuf * pixbuf) {
 		APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
 	app_indicator_set_title(icon->indicator, "HexChat");
 	app_indicator_set_status(icon->indicator, APP_INDICATOR_STATUS_ACTIVE);
-#if HAVE_ACTIVATION
 	app_indicator_set_item_is_menu(icon->indicator, FALSE);
-#endif
 	icon->active_loop = g_idle_add(hexchat_icon_set_menu_loop, icon);
 	return (gpointer) icon;
 }

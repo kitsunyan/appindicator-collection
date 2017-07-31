@@ -1,7 +1,7 @@
 #define DEBUG_NAME "GAJIM"
 
 #include <common/common.h>
-#include <libappindicator/app-indicator.h>
+#include <common/appindicator.h>
 
 #define ICON_PREFIX "gajim-tray-"
 
@@ -249,11 +249,7 @@ static void gajim_icon_set_menu_tooltip(GajimIcon * icon) {
 					G_CALLBACK(gajim_icon_primary_activate), icon);
 				g_object_weak_ref(G_OBJECT(icon->primary_item),
 					gajim_icon_primary_unref, NULL);
-#if HAVE_ACTIVATION
-				app_indicator_set_activate_target(icon->indicator, icon->primary_item);
-#else
 				app_indicator_set_secondary_activate_target(icon->indicator, icon->primary_item);
-#endif
 			}
 			g_list_free(list);
 		}
@@ -295,9 +291,7 @@ gpointer g_object_newv(GType object_type, guint n_parameters, GParameter * param
 			APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
 		app_indicator_set_title(icon->indicator, "Gajim");
 		app_indicator_set_status(icon->indicator, APP_INDICATOR_STATUS_ACTIVE);
-#if HAVE_ACTIVATION
 		app_indicator_set_item_is_menu(icon->indicator, FALSE);
-#endif
 		icon->active_loop = g_idle_add(gajim_icon_set_menu_tooltip_loop, icon);
 		return (gpointer) icon;
 	} else {

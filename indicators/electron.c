@@ -1,7 +1,7 @@
 #define DEBUG_NAME "ELECTRON"
 
 #include <common/common.h>
-#include <libappindicator/app-indicator.h>
+#include <common/appindicator.h>
 
 #define pass_args(...) __VA_ARGS__
 
@@ -29,15 +29,11 @@ static gboolean menu_head_is_activate() {
 	return menu_head_activate != NULL && strlen(menu_head_activate) > 0;
 }
 
-#if HAVE_ACTIVATION
 static void apply_head_is_activate(AppIndicator * self) {
 	if (menu_head_is_activate()) {
 		app_indicator_set_item_is_menu(self, FALSE);
 	}
 }
-#else
-#define apply_head_is_activate(ignore)
-#endif
 
 static gchar * create_icon_name(AppIndicator * self,
 	const gchar * id, const gchar * theme_path, const gchar * icon_name) {
@@ -128,11 +124,7 @@ void app_indicator_set_menu(AppIndicator * self, GtkMenu * menu) {
 	if (menu != NULL && menu_head_is_activate()) {
 		GList * list = gtk_container_get_children(GTK_CONTAINER(menu));
 		if (list != NULL) {
-#if HAVE_ACTIVATION
-			app_indicator_set_activate_target(self, list->data);
-#else
 			app_indicator_set_secondary_activate_target(self, list->data);
-#endif
 			g_list_free(list);
 		}
 	}

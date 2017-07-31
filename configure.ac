@@ -42,31 +42,17 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
-AC_DEFUN([AI_TEST_ACTIVATE], [
-	OLD_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS $$1"
-	AC_MSG_CHECKING([for $3::app_indicator_set_activate_target])
-	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <libappindicator/app-indicator.h>],
-		[void * test = app_indicator_set_activate_target;])], [
-			AC_MSG_RESULT([yes])
-			AC_DEFINE_UNQUOTED([HAVE_ACTIVATION_$2], 1, [Library supports activation])
-		], [AC_MSG_RESULT([no])])
-	CFLAGS="$OLD_CFLAGS"
-])
+AC_ARG_WITH([activate], AS_HELP_STRING([--with-activate], [Enable appindicator left-click activation]))
+if test x"$with_activate" == x"yes"; then
+	AC_DEFINE([WITH_ACTIVATE], [], [Enable appindicator left-click activation])
+fi
 
 PKG_CHECK_MODULES(APP_INDICATOR_GTK2, appindicator-0.1)
 PKG_CHECK_MODULES(APP_INDICATOR_GTK3, appindicator3-0.1)
-AI_TEST_ACTIVATE(APP_INDICATOR_GTK2_CFLAGS, GTK2, gtk2)
-AI_TEST_ACTIVATE(APP_INDICATOR_GTK3_CFLAGS, GTK3, gtk3)
 AC_SUBST(APP_INDICATOR_GTK2_CFLAGS)
 AC_SUBST(APP_INDICATOR_GTK3_CFLAGS)
 AC_SUBST(APP_INDICATOR_GTK2_LIBS)
 AC_SUBST(APP_INDICATOR_GTK3_LIBS)
-
-AC_DEFINE_UNQUOTED([HAVE_ACTIVATION],
-	[((GTK_CHECK_VERSION(3, 0, 0) && defined(HAVE_ACTIVATION_GTK3)) || \
-		(!GTK_CHECK_VERSION(3, 0, 0) && defined(HAVE_ACTIVATION_GTK2)))],
-	[Library supports activation])
 
 AC_HEADER_STDC
 

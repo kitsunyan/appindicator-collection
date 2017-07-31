@@ -37,6 +37,7 @@ if (name##_super == NULL) { \
 	} \
 }
 
+void * dlsym_override_private(const char * symbol);
 void * dlsym_override(const char * symbol);
 
 #endif

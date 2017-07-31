@@ -21,7 +21,7 @@ libappindicator_electron_gtk2_la_CFLAGS = \
 
 libappindicator_electron_gtk2_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
-	$(APP_INDICATOR_GTK2_LIBS)
+	$(top_builddir)/common/libappindicator-gtk2.la
 
 libappindicator_electron_gtk2_la_LDFLAGS = \
 	-avoid-version \
@@ -37,7 +37,7 @@ libappindicator_electron_gtk3_la_CFLAGS = \
 
 libappindicator_electron_gtk3_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
-	$(APP_INDICATOR_GTK3_LIBS)
+	$(top_builddir)/common/libappindicator-gtk3.la
 
 libappindicator_electron_gtk3_la_LDFLAGS = \
 	-avoid-version \
@@ -60,7 +60,7 @@ libappindicator_gajim_la_CFLAGS = \
 
 libappindicator_gajim_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
-	$(APP_INDICATOR_GTK2_LIBS)
+	$(top_builddir)/common/libappindicator-gtk2.la
 
 libappindicator_gajim_la_LDFLAGS = \
 	-avoid-version \
@@ -83,7 +83,7 @@ libappindicator_hexchat_la_CFLAGS = \
 
 libappindicator_hexchat_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
-	$(APP_INDICATOR_GTK2_LIBS)
+	$(top_builddir)/common/libappindicator-gtk2.la
 
 libappindicator_hexchat_la_LDFLAGS = \
 	-avoid-version \
@@ -106,7 +106,7 @@ libappindicator_telegram_la_CFLAGS = \
 
 libappindicator_telegram_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
-	$(APP_INDICATOR_GTK3_LIBS)
+	$(top_builddir)/common/libappindicator-gtk3.la
 
 libappindicator_telegram_la_LDFLAGS = \
 	-avoid-version \
