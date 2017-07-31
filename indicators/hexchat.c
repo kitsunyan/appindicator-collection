@@ -1,5 +1,3 @@
-#define DEBUG_NAME "HEXCHAT"
-
 #include <common/common.h>
 #include <common/appindicator.h>
 

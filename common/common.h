@@ -15,10 +15,10 @@ extern int local_dlsym;
 
 #define debug(format, ...) { \
 	if (preload_debug == 2) { \
-		preload_debug = getenv(DEBUG_NAME "_APPINDICATOR_DEBUG") != NULL ? 1 : 0; \
+		preload_debug = getenv("APPINDICATOR_DEBUG") != NULL ? 1 : 0; \
 	} \
 	if (preload_debug == 1) { \
-		printf(DEBUG_NAME " APPINDICATOR: " format "\n", __VA_ARGS__); \
+		printf("APPINDICATOR: " format "\n", __VA_ARGS__); \
 	} \
 }
 

@@ -1,5 +1,3 @@
-#define DEBUG_NAME "TELEGRAM"
-
 #include <common/common.h>
 #include <common/appindicator.h>
 

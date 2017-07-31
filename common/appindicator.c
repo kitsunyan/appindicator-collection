@@ -1,5 +1,3 @@
-#define DEBUG_NAME "COMMON"
-
 #include "common.h"
 #include "appindicator.h"
 
