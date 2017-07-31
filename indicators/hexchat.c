@@ -22,7 +22,7 @@ typedef struct _HexchatIcon {
 
 enum {
 	PROP_0,
-	PROP_EMBEDDED,
+	PROP_EMBEDDED
 };
 
 enum {
@@ -96,11 +96,11 @@ static void hexchat_icon_class_init(HexchatIconClass * klass) {
 
 	hexchat_icon_signals[ACTIVATE] = g_signal_new(g_intern_static_string("activate"),
 		G_TYPE_FROM_CLASS(object_class), G_SIGNAL_RUN_LAST, 0, NULL, NULL,
-		g_cclosure_marshal_generic, G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
+		g_cclosure_marshal_generic, G_TYPE_NONE, 0);
 
 	hexchat_icon_signals[POPUP_MENU] = g_signal_new(g_intern_static_string("popup-menu"),
 		G_TYPE_FROM_CLASS(object_class), G_SIGNAL_RUN_LAST, 0, NULL, NULL,
-		g_cclosure_marshal_generic, G_TYPE_NONE, 0);
+		g_cclosure_marshal_generic, G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
 }
 
 static void hexchat_icon_activate(HexchatIcon * icon) {
@@ -115,15 +115,15 @@ static GtkMenu * obtain_menu_result;
 
 static void hexchat_icon_set_menu_foreach(GtkWidget * widget, gpointer user_data) {
 	if (GTK_IS_MENU_ITEM(widget)) {
-	 	GtkMenuItem * item = GTK_MENU_ITEM(widget);
-	 	GtkWidget * submenu = gtk_menu_item_get_submenu (item);
-	 	if (submenu != NULL) {
-	 		gtk_container_foreach(GTK_CONTAINER(submenu),
-	 			hexchat_icon_set_menu_foreach, user_data);
-	 	} else {
-	 		g_signal_connect_swapped(item, "activate",
-	 			G_CALLBACK(hexchat_icon_activate), user_data);
-	 	}
+		GtkMenuItem * item = GTK_MENU_ITEM(widget);
+		GtkWidget * submenu = gtk_menu_item_get_submenu (item);
+		if (submenu != NULL) {
+			gtk_container_foreach(GTK_CONTAINER(submenu),
+				hexchat_icon_set_menu_foreach, user_data);
+		} else {
+			g_signal_connect_swapped(item, "activate",
+				G_CALLBACK(hexchat_icon_activate), user_data);
+		}
 	}
 }
 

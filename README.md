@@ -56,8 +56,8 @@ The counter was moved to the tooltip.
 
 The following icon names are used:
 
-- `telegram-tray` — regular icon
-- `telegram-tray-new` — icon for unread messages
-- `telegram-tray-highlight` — icon for direct private messages
+- `telegram-tray` — regular icon.
+- `telegram-tray-new` — icon for unread messages.
+- `telegram-tray-highlight` — icon for direct private messages.
 
 Note that `XDG_CURRENT_DESKTOP` variable should be set to `Unity`!
