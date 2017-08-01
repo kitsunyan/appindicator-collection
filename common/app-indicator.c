@@ -111,7 +111,7 @@ guint g_dbus_connection_register_object(GDBusConnection * connection, const gcha
 		user_data, user_data_free_func, error);
 }
 
-void * dlsym_override_private(const char * symbol) {
+void * app_indicator_dlsym_override(const char * symbol) {
 	dlsym_compare(g_dbus_node_info_new_for_xml);
 	dlsym_compare(g_dbus_connection_register_object);
 	return NULL;
@@ -119,7 +119,7 @@ void * dlsym_override_private(const char * symbol) {
 
 #else
 
-void * dlsym_override_private(const char * symbol) {
+void * app_indicator_dlsym_override(const char * symbol) {
 	return NULL;
 }
 

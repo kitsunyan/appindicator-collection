@@ -79,6 +79,7 @@ void app_indicator_set_menu(AppIndicator * self, GtkMenu * menu) {
 }
 
 void * dlsym_override(const char * symbol) {
+	dlsym_override_library(app_indicator);
 	dlsym_compare(app_indicator_set_icon_full);
 	dlsym_compare(app_indicator_set_menu);
 	return NULL;

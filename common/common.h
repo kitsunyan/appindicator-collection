@@ -37,7 +37,13 @@ if (name##_super == NULL) { \
 	} \
 }
 
-void * dlsym_override_private(const char * symbol);
+#define dlsym_override_library(library) { \
+	void * __result = library##_dlsym_override(symbol); \
+	if (__result != NULL) { \
+		return __result; \
+	} \
+}
+
 void * dlsym_override(const char * symbol);
 
 #endif

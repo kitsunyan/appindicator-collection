@@ -13,10 +13,6 @@ void * dlsym(void * handle, const char * symbol) {
 	if (symbol != NULL && !strcmp(symbol, "dlsym")) {
 		return (void *) dlsym;
 	}
-	void * result = NULL;
-	if (symbol != NULL) {
-		result = result == NULL ? dlsym_override_private(symbol) : NULL;
-		result = result == NULL ? dlsym_override(symbol) : NULL;
-	}
+	void * result = symbol != NULL ? dlsym_override(symbol) : NULL;
 	return result != NULL ? result : dlsym_super(handle, symbol);
 }
