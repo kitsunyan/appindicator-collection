@@ -1,5 +1,5 @@
 #include <common/common.h>
-#include <common/appindicator.h>
+#include <common/app-indicator.h>
 
 #define ICON_NAME_NORMAL "hexchat-tray"
 #define ICON_NAME_NEW "hexchat-tray-new"

@@ -1,5 +1,5 @@
-#ifndef __APPINDICATOR_FEATURES_H__
-#define __APPINDICATOR_FEATURES_H__
+#ifndef __APP_INDICATOR_FEATURES_H__
+#define __APP_INDICATOR_FEATURES_H__
 
 #include <libappindicator/app-indicator.h>
 

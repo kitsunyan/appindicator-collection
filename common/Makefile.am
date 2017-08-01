@@ -19,8 +19,8 @@ libcommon_la_LDFLAGS = \
 	$(PLATFORM_LDFLAGS)
 
 libappindicator_gtk2_la_SOURCES = \
-	appindicator.c \
-	appindicator.h
+	app-indicator.c \
+	app-indicator.h
 
 libappindicator_gtk2_la_CFLAGS = \
 	$(APP_INDICATOR_GTK2_CFLAGS)
@@ -33,8 +33,8 @@ libappindicator_gtk2_la_LDFLAGS = \
 	$(PLATFORM_LDFLAGS)
 
 libappindicator_gtk3_la_SOURCES = \
-	appindicator.c \
-	appindicator.h
+	app-indicator.c \
+	app-indicator.h
 
 libappindicator_gtk3_la_CFLAGS = \
 	$(APP_INDICATOR_GTK3_CFLAGS)

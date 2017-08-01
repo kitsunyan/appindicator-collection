@@ -1,5 +1,5 @@
 #include <common/common.h>
-#include <common/appindicator.h>
+#include <common/app-indicator.h>
 
 #define pass_args(...) __VA_ARGS__
 

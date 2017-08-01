@@ -1,7 +1,7 @@
 #include "common.h"
-#include "appindicator.h"
+#include "app-indicator.h"
 
-#define KEY_PRIMARY_ACTIVATE "appindicator-primary-activate"
+#define KEY_PRIMARY_ACTIVATE "app-indicator-primary-activate"
 
 void app_indicator_set_item_is_menu(AppIndicator * indicator, gboolean item_is_menu) {
 	g_object_set_data(G_OBJECT(indicator), KEY_PRIMARY_ACTIVATE, GINT_TO_POINTER(!item_is_menu));
@@ -61,27 +61,27 @@ GDBusNodeInfo * g_dbus_node_info_new_for_xml(const gchar * xml_data, GError ** e
 	}
 }
 
-static GDBusInterfaceMethodCallFunc appindicator_method_call_super = NULL;
-static GDBusInterfaceGetPropertyFunc appindicator_get_property_super = NULL;
+static GDBusInterfaceMethodCallFunc app_indicator_method_call_super = NULL;
+static GDBusInterfaceGetPropertyFunc app_indicator_get_property_super = NULL;
 
-static void appindicator_method_call(GDBusConnection * connection, const gchar * sender,
+static void app_indicator_method_call(GDBusConnection * connection, const gchar * sender,
 	const gchar * object_path, const gchar * interface_name, const gchar * method_name,
 	GVariant * parameters, GDBusMethodInvocation * invocation, gpointer user_data) {
 	if (!g_strcmp0(method_name, "Activate")) {
 		method_name = "SecondaryActivate";
 	}
-	appindicator_method_call_super(connection, sender, object_path, interface_name, method_name,
+	app_indicator_method_call_super(connection, sender, object_path, interface_name, method_name,
 		parameters, invocation, user_data);
 }
 
-static GVariant * appindicator_get_property(GDBusConnection * connection, const gchar * sender,
+static GVariant * app_indicator_get_property(GDBusConnection * connection, const gchar * sender,
 	const gchar * object_path, const gchar * interface_name, const gchar * property_name,
 	GError ** error, gpointer user_data) {
 	if (!g_strcmp0(property_name, "ItemIsMenu")) {
 		AppIndicator * indicator = APP_INDICATOR(user_data);
 		return g_variant_new_boolean(app_indicator_get_item_is_menu(indicator));
 	}
-	appindicator_get_property_super(connection, sender, object_path, interface_name, property_name,
+	app_indicator_get_property_super(connection, sender, object_path, interface_name, property_name,
 		error, user_data);
 }
 
@@ -97,11 +97,11 @@ guint g_dbus_connection_register_object(GDBusConnection * connection, const gcha
 	if (strstr(object_path, prefix) == object_path) {
 		const gchar * name = &object_path[strlen(prefix)];
 		if (strstr(name, "/") == NULL) {
-			if (appindicator_method_call_super == NULL) {
-				appindicator_method_call_super = vtable->method_call;
-				appindicator_get_property_super = vtable->get_property;
-				vtable_override.method_call = appindicator_method_call;
-				vtable_override.get_property = appindicator_get_property;
+			if (app_indicator_method_call_super == NULL) {
+				app_indicator_method_call_super = vtable->method_call;
+				app_indicator_get_property_super = vtable->get_property;
+				vtable_override.method_call = app_indicator_method_call;
+				vtable_override.get_property = app_indicator_get_property;
 				vtable_override.set_property = vtable->set_property;
 			}
 			vtable = &vtable_override;

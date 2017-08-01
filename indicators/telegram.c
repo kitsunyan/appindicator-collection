@@ -1,5 +1,5 @@
 #include <common/common.h>
-#include <common/appindicator.h>
+#include <common/app-indicator.h>
 
 void app_indicator_set_icon_full(AppIndicator * self, const gchar * icon_name, const gchar * icon_desc) {
 	super_lookup_static(app_indicator_set_icon_full, void,
