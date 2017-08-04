@@ -52,17 +52,33 @@ void icon_stub_set_visible(IconStub * icon_stub, gboolean visible);
 
 void * icon_stub_dlsym_override(const char * symbol);
 
-#define status_icon_check_void(function, args, call) \
-if (GTK_IS_STATUS_ICON(status_icon)) { \
+#define status_icon_check_condition_void(condition, function, args, call) \
+if (condition) { \
 	super_lookup_static(function, void, args); \
 	function##_super(call); \
 	return; \
 }
 
-#define status_icon_check(function, result, args, call) \
-if (GTK_IS_STATUS_ICON(status_icon)) { \
+#define status_icon_check_condition(condition, function, result, args, call) \
+if (condition) { \
 	super_lookup_static(function, result, args); \
 	return function##_super(call); \
 }
+
+#define status_icon_check_void(function, args, call) \
+status_icon_check_condition_void(GTK_IS_STATUS_ICON(status_icon), function, \
+	pass_args(args), pass_args(call))
+
+#define status_icon_check(function, result, args, call) \
+status_icon_check_condition(GTK_IS_STATUS_ICON(status_icon), function, result, \
+	pass_args(args), pass_args(call))
+
+#define status_icon_check_init_void(function, args, call) \
+status_icon_check_condition_void(app_indicator_falling_back, function, \
+	pass_args(args), pass_args(call))
+
+#define status_icon_check_init(function, result, args, call) \
+status_icon_check_condition(app_indicator_falling_back, function, result, \
+	pass_args(args), pass_args(call))
 
 #endif

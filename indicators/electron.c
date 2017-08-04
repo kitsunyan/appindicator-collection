@@ -85,15 +85,16 @@ static gchar * create_icon_name(AppIndicator * self,
 	return result;
 }
 
-def_override(app_indicator_new, AppIndicator *,
-	pass_args(const gchar *id, const gchar *icon_name, AppIndicatorCategory category),
-	pass_args(id, new_icon_name, category),
-	pass_args(NULL, id, NULL), apply_head_is_activate(res));
+AppIndicator * app_indicator_new(const gchar *id, const gchar *icon_name, AppIndicatorCategory category) {
+	return app_indicator_new_extended(id, icon_name, category);
+}
 
-def_override(app_indicator_new_with_path, AppIndicator *,
-	pass_args(const gchar *id, const gchar *icon_name, AppIndicatorCategory category, const gchar *icon_theme_path),
-	pass_args(id, new_icon_name, category, icon_theme_path),
-	pass_args(NULL, id, icon_theme_path), apply_head_is_activate(res));
+AppIndicator * app_indicator_new_with_path(const gchar *id, const gchar *icon_name, AppIndicatorCategory category,
+	const gchar *icon_theme_path) {
+	AppIndicator * indicator = app_indicator_new_extended(id, icon_name, category);
+	app_indicator_set_icon_theme_path(indicator, icon_theme_path);
+	return indicator;
+}
 
 def_override_void(app_indicator_set_icon,
 	pass_args(AppIndicator * self, const gchar * icon_name),

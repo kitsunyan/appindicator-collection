@@ -1,16 +1,65 @@
 #include "common.h"
 #include "app-indicator.h"
 
-#define KEY_PRIMARY_ACTIVATE "app-indicator-primary-activate"
+#include <libappindicator/app-indicator-enum-types.h>
+
+gboolean app_indicator_falling_back = FALSE;
+
+typedef struct _ExtendedClass {
+	AppIndicatorClass __parent__;
+} ExtendedClass;
+
+typedef struct _Extended {
+	AppIndicator __parent__;
+	gboolean item_is_menu;
+} Extended;
+
+static void extended_init(Extended * extended);
+static void extended_class_init(ExtendedClass * klass);
+
+G_DEFINE_TYPE(Extended, extended, APP_INDICATOR_TYPE);
+
+#define EXTENDED_TYPE (extended_get_type())
+#define EXTENDED(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), EXTENDED_TYPE, Extended))
+#define IS_EXTENDED(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), EXTENDED_TYPE))
+
+static GtkStatusIcon * extended_fallback(AppIndicator * indicator) {
+	app_indicator_falling_back = TRUE;
+	APP_INDICATOR_CLASS(extended_parent_class)->fallback(indicator);
+	app_indicator_falling_back = FALSE;
+}
+
+static void extended_init(Extended * extended) {
+	extended->item_is_menu = TRUE;
+}
+
+static void extended_class_init(ExtendedClass * klass) {
+	AppIndicatorClass * app_indicator_class = APP_INDICATOR_CLASS(klass);
+	app_indicator_class->fallback = extended_fallback;
+}
+
+AppIndicator * app_indicator_new_extended(const gchar * id, const gchar * icon_name,
+	AppIndicatorCategory category) {
+	GEnumValue * value = g_enum_get_value((GEnumClass *) g_type_class_ref
+		(APP_INDICATOR_TYPE_INDICATOR_CATEGORY), category);
+
+	return g_object_new(EXTENDED_TYPE, "id", id, "category", value->value_nick,
+		"icon-name", icon_name, NULL);
+}
 
 void app_indicator_set_item_is_menu(AppIndicator * indicator, gboolean item_is_menu) {
-	g_object_set_data(G_OBJECT(indicator), KEY_PRIMARY_ACTIVATE, GINT_TO_POINTER(!item_is_menu));
+	if (IS_EXTENDED(indicator)) {
+		Extended * extended = EXTENDED(indicator);
+		extended->item_is_menu = item_is_menu;
+	}
 }
 
 gboolean app_indicator_get_item_is_menu(AppIndicator * indicator) {
-	gboolean primary_activate = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(indicator),
-		KEY_PRIMARY_ACTIVATE));
-	return !primary_activate;
+	if (IS_EXTENDED(indicator)) {
+		Extended * extended = EXTENDED(indicator);
+		return extended->item_is_menu;
+	}
+	return TRUE;
 }
 
 guint gdk_pixbuf_hash(GdkPixbuf * pixbuf) {

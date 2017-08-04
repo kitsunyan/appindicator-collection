@@ -64,6 +64,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 GtkStatusIcon * gtk_status_icon_new() {
+	status_icon_check_init(gtk_status_icon_new, GtkStatusIcon *,
+		pass_args(), pass_args());
+
 	const gchar * title = getenv("SYSTRAY_APPINDICATOR_TITLE");
 	if (title == NULL || strlen(title) == 0) {
 		title = "System Tray Icon";
@@ -88,6 +91,9 @@ GtkStatusIcon * gtk_status_icon_new() {
 }
 
 GtkStatusIcon * gtk_status_icon_new_from_pixbuf(GdkPixbuf * pixbuf) {
+	status_icon_check_init(gtk_status_icon_new_from_pixbuf, GtkStatusIcon *,
+		pass_args(GdkPixbuf *), pass_args(pixbuf));
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	GtkStatusIcon * status_icon = gtk_status_icon_new();
 	gtk_status_icon_set_from_pixbuf(status_icon, pixbuf);
@@ -96,6 +102,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 GtkStatusIcon * gtk_status_icon_new_from_file(const gchar * filename) {
+	status_icon_check_init(gtk_status_icon_new_from_file, GtkStatusIcon *,
+		pass_args(const gchar *), pass_args(filename));
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	GtkStatusIcon * status_icon = gtk_status_icon_new();
 	gtk_status_icon_set_from_file(gtk_status_icon_new(), filename);
@@ -104,6 +113,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 GtkStatusIcon * gtk_status_icon_new_from_stock(const gchar * stock_id) {
+	status_icon_check_init(gtk_status_icon_new_from_stock, GtkStatusIcon *,
+		pass_args(const gchar *), pass_args(stock_id));
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	GtkStatusIcon * status_icon = gtk_status_icon_new();
 	gtk_status_icon_set_from_stock(gtk_status_icon_new(), stock_id);
@@ -112,6 +124,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 GtkStatusIcon * gtk_status_icon_new_from_icon_name(const gchar * icon_name) {
+	status_icon_check_init(gtk_status_icon_new_from_icon_name, GtkStatusIcon *,
+		pass_args(const gchar *), pass_args(icon_name));
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	GtkStatusIcon * status_icon = gtk_status_icon_new();
 	gtk_status_icon_set_from_icon_name(gtk_status_icon_new(), icon_name);
@@ -120,11 +135,28 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 GtkStatusIcon * gtk_status_icon_new_from_gicon(GIcon * icon) {
+	status_icon_check_init(gtk_status_icon_new_from_gicon, GtkStatusIcon *,
+		pass_args(GIcon *), pass_args(icon));
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	GtkStatusIcon * status_icon = gtk_status_icon_new();
 	gtk_status_icon_set_from_gicon(gtk_status_icon_new(), icon);
 	return status_icon;
 G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
+gpointer g_object_newv(GType object_type, guint n_parameters, GParameter * parameters) {
+	status_icon_check_init(g_object_newv, gpointer,
+		pass_args(GType, guint, GParameter *), pass_args(object_type, n_parameters, parameters));
+
+	if (object_type == GTK_TYPE_STATUS_ICON) {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+		return gtk_status_icon_new();
+G_GNUC_END_IGNORE_DEPRECATIONS
+	} else {
+		super_lookup_static(g_object_newv, gpointer, GType, guint, GParameter *);
+		return g_object_newv_super(object_type, n_parameters, parameters);
+	}
 }
 
 void gtk_status_icon_set_from_pixbuf(GtkStatusIcon * status_icon, GdkPixbuf * pixbuf) {
@@ -525,6 +557,7 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	dlsym_compare(gtk_status_icon_new_from_stock);
 	dlsym_compare(gtk_status_icon_new_from_icon_name);
 	dlsym_compare(gtk_status_icon_new_from_gicon);
+	dlsym_compare(g_object_newv);
 	dlsym_compare(gtk_status_icon_set_from_pixbuf);
 	dlsym_compare(gtk_status_icon_set_from_file);
 	dlsym_compare(gtk_status_icon_set_from_stock);

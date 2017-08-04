@@ -290,7 +290,7 @@ static gboolean icon_stub_set_menu_tooltip_loop(gpointer user_data) {
 IconStub * icon_stub_new(const gchar * id, const gchar * title, const gchar * default_icon, gpointer data) {
 	IconStub * icon_stub = g_object_new(ICON_STUB_TYPE, NULL);
 	icon_stub->data = data;
-	icon_stub->indicator = app_indicator_new(id, default_icon,
+	icon_stub->indicator = app_indicator_new_extended(id, default_icon,
 		APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
 	icon_stub->active_loop = g_idle_add(icon_stub_set_menu_tooltip_loop, icon_stub);
 

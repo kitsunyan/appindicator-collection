@@ -112,6 +112,9 @@ static void obtain_tooltip(IconStub * icon_stub, GtkWidget * widget) {
 }
 
 gpointer g_object_newv(GType object_type, guint n_parameters, GParameter * parameters) {
+	status_icon_check_init(g_object_newv, gpointer,
+		pass_args(GType, guint, GParameter *), pass_args(object_type, n_parameters, parameters));
+
 	if (object_type == GTK_TYPE_STATUS_ICON) {
 		GajimData * data = g_new0(GajimData, 1);
 

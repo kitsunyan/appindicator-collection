@@ -28,6 +28,9 @@ static void update_icon_tooltip(IconStub * icon_stub) {
 }
 
 GtkStatusIcon * gtk_status_icon_new_from_pixbuf(GdkPixbuf * pixbuf) {
+	status_icon_check_init(gtk_status_icon_new_from_pixbuf, GtkStatusIcon *,
+		pass_args(GdkPixbuf *), pass_args(pixbuf));
+
 	HexchatData * data = g_new0(HexchatData, 1);
 	data->normal_pixbuf = g_object_ref(pixbuf);
 	data->current_pixbuf = g_object_ref(pixbuf);

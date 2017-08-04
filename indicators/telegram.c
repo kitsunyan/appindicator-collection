@@ -1,6 +1,10 @@
 #include <common/common.h>
 #include <common/app-indicator.h>
 
+AppIndicator * app_indicator_new(const gchar *id, const gchar *icon_name, AppIndicatorCategory category) {
+	return app_indicator_new_extended(id, icon_name, category);
+}
+
 void app_indicator_set_icon_full(AppIndicator * self, const gchar * icon_name, const gchar * icon_desc) {
 	super_lookup_static(app_indicator_set_icon_full, void,
 		AppIndicator *, const gchar *, const gchar *);
@@ -90,6 +94,7 @@ void app_indicator_set_menu(AppIndicator * self, GtkMenu * menu) {
 
 void * dlsym_override(const char * symbol) {
 	dlsym_override_library(app_indicator);
+	dlsym_compare(app_indicator_new);
 	dlsym_compare(app_indicator_set_icon_full);
 	dlsym_compare(app_indicator_set_menu);
 	return NULL;
