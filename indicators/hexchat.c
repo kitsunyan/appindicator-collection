@@ -33,7 +33,7 @@ GtkStatusIcon * gtk_status_icon_new_from_pixbuf(GdkPixbuf * pixbuf) {
 	data->current_pixbuf = pixbuf;
 	g_object_ref(pixbuf);
 	g_object_ref(pixbuf);
-	IconStub * icon_stub = icon_stub_new("hexchat", "HexChat", ICON_NAME_NORMAL, FALSE, data);
+	IconStub * icon_stub = icon_stub_new("hexchat", "HexChat", ICON_NAME_NORMAL, data);
 	g_signal_connect(icon_stub, "configure-menu",
 		G_CALLBACK(icon_stub_configure_menu_select_activate_head), NULL);
 	g_signal_connect(icon_stub, "update-icon-tooltip",
@@ -63,6 +63,23 @@ GdkPixbuf * gtk_status_icon_get_pixbuf(GtkStatusIcon * status_icon) {
 	IconStub * icon_stub = ICON_STUB(status_icon);
 	HexchatData * data = icon_stub_get_data(icon_stub);
 	return data->current_pixbuf;
+}
+
+void icon_stub_get_property(GObject * object, guint prop_id, GValue * value, GParamSpec * pspec) {
+	switch (prop_id) {
+		case ICON_STUB_PROPERTY_EMBEDDED: {
+			g_value_set_boolean(value, TRUE);
+			break;
+		}
+		default: {
+			G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+			break;
+		}
+	}
+}
+
+void icon_stub_set_property(GObject * object, guint prop_id, const GValue * value, GParamSpec * pspec) {
+	G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
 }
 
 void * dlsym_override(const char * symbol) {

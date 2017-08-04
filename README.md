@@ -23,7 +23,8 @@ Note that this feature may be not supported by your desktop environment.
 ### Electron Applications
 
 Configure flag: `--enable-electron`.  
-Shared library: `libappindicator-electron.so`.
+Shared library (GTK+ 2): `libappindicator-electron-gtk2.so`.  
+Shared library (GTK+ 3): `libappindicator-electron-gtk3.so`.
 
 A hash sum is computed for each icon and appended to icon name. This allows you to replace icons using icon themes.
 
@@ -61,6 +62,19 @@ The following icon names are used:
 
 - `hexchat-tray` — regular icon
 - `hexchat-tray-new` — blinking icon for new messages
+
+### System Tray
+
+Configure flag: `--enable-systray`.  
+Shared library (GTK+ 2): `libappindicator-systray-gtk2.so`.  
+Shared library (GTK+ 3): `libappindicator-systray-gtk3.so`.
+
+Generic patch for GTK+ applications which replaces systray with application indicator.
+
+A different icon name is used for different types of icons. Use `sni-print` shell script from `tools` directory
+to determine icon name.
+
+This library may be useful for applications with static systray icons.
 
 ### Telegram Desktop
 

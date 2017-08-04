@@ -107,7 +107,8 @@ static void obtain_tooltip(IconStub * icon_stub, GtkWidget * widget) {
 gpointer g_object_newv(GType object_type, guint n_parameters, GParameter * parameters) {
 	if (object_type == GTK_TYPE_STATUS_ICON) {
 		GajimData * data = g_new0(GajimData, 1);
-		IconStub * icon_stub = icon_stub_new("gajim", "Gajim", ICON_PREFIX "offline", TRUE, data);
+		IconStub * icon_stub = icon_stub_new("gajim", "Gajim", ICON_PREFIX "offline", data);
+		icon_stub_set_query_tooltip(icon_stub, TRUE);
 		g_signal_connect(icon_stub, "configure-menu",
 			G_CALLBACK(icon_stub_configure_menu_prepend_activate), NULL);
 		g_signal_connect(icon_stub, "update-icon-tooltip",
@@ -183,6 +184,22 @@ void gtk_image_set_from_file(GtkImage * image, const gchar * filename) {
 			status_pixbufs = g_list_prepend(status_pixbufs, status_pixbuf);
 			debug("add status %ld %s", (gsize) pixbuf, status_pixbuf->status);
 			g_object_weak_ref(G_OBJECT(pixbuf), pixbuf_unref, NULL);
+		}
+	}
+}
+
+void icon_stub_get_property(GObject * object, guint prop_id, GValue * value, GParamSpec * pspec) {
+	G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+}
+
+void icon_stub_set_property(GObject * object, guint prop_id, const GValue * value, GParamSpec * pspec) {
+	switch (prop_id) {
+		case ICON_STUB_PROPERTY_HAS_TOOLTIP: {
+			break;
+		}
+		default: {
+			G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+			break;
 		}
 	}
 }

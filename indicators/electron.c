@@ -58,13 +58,7 @@ static gchar * create_icon_name(AppIndicator * self,
 	if (pixbuf == NULL) {
 		return g_strdup(icon_name);
 	}
-	guint length = 0;
-	guchar * pixels = gdk_pixbuf_get_pixels_with_length(pixbuf, &length);
-	guint prime = 31;
-	guint hash_code = 0;
-	for (guint i = 0; i < length; i++) {
-		hash_code = prime * hash_code + pixels[i];
-	}
+	guint hash_code = gdk_pixbuf_hash(pixbuf);
 	debug("hash code %08x", hash_code);
 	g_object_unref(pixbuf);
 	gchar * new_id = g_strdup(id);

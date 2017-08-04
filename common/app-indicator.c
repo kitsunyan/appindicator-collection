@@ -13,6 +13,20 @@ gboolean app_indicator_get_item_is_menu(AppIndicator * indicator) {
 	return !primary_activate;
 }
 
+guint gdk_pixbuf_hash(GdkPixbuf * pixbuf) {
+	if (pixbuf == NULL) {
+		return 0;
+	}
+	guint length = 0;
+	guchar * pixels = gdk_pixbuf_get_pixels_with_length(pixbuf, &length);
+	guint prime = 31;
+	guint hash_code = 0;
+	for (guint i = 0; i < length; i++) {
+		hash_code = prime * hash_code + pixels[i];
+	}
+	return hash_code;
+}
+
 #ifdef WITH_ACTIVATE
 
 static const gchar * xml_declaration = "<interface name=\"org.kde.StatusNotifierItem\">\n";

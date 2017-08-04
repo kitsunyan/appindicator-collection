@@ -95,6 +95,48 @@ libappindicator_hexchat_la_LDFLAGS = \
 
 endif
 
+if ENABLE_SYSTRAY
+
+install_LTLIBRARIES += \
+	libappindicator-systray-gtk2.la \
+	libappindicator-systray-gtk3.la
+
+libappindicator_systray_gtk2_la_SOURCES = \
+	systray.c
+
+libappindicator_systray_gtk2_la_CFLAGS = \
+	$(APP_INDICATOR_GTK2_CFLAGS)
+
+libappindicator_systray_gtk2_la_LIBADD = \
+	$(top_builddir)/common/libcommon.la \
+	$(top_builddir)/common/libappindicator-gtk2.la \
+	$(top_builddir)/common/libiconstub-gtk2.la
+
+libappindicator_systray_gtk2_la_LDFLAGS = \
+	-avoid-version \
+	-module \
+	-no-undefined \
+	$(PLATFORM_LDFLAGS)
+
+libappindicator_systray_gtk3_la_SOURCES = \
+	systray.c
+
+libappindicator_systray_gtk3_la_CFLAGS = \
+	$(APP_INDICATOR_GTK3_CFLAGS)
+
+libappindicator_systray_gtk3_la_LIBADD = \
+	$(top_builddir)/common/libcommon.la \
+	$(top_builddir)/common/libappindicator-gtk3.la \
+	$(top_builddir)/common/libiconstub-gtk3.la
+
+libappindicator_systray_gtk3_la_LDFLAGS = \
+	-avoid-version \
+	-module \
+	-no-undefined \
+	$(PLATFORM_LDFLAGS)
+
+endif
+
 if ENABLE_TELEGRAM
 
 install_LTLIBRARIES += \

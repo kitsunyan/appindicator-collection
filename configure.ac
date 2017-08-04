@@ -24,6 +24,7 @@ AC_DEFUN([AI_ENABLE], [
 AI_ENABLE(electron, ELECTRON)
 AI_ENABLE(gajim, GAJIM)
 AI_ENABLE(hexchat, HEXCHAT)
+AI_ENABLE(systray, SYSTRAY)
 AI_ENABLE(telegram, TELEGRAM)
 
 if test -z "$enabled"; then
