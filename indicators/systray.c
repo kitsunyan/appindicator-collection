@@ -183,6 +183,7 @@ void gtk_status_icon_set_from_gicon(GtkStatusIcon * status_icon, GIcon * icon) {
 	if (icon != NULL) {
 		data->image_gicon = g_object_ref(icon);
 		data->image_type = GTK_IMAGE_GICON;
+
 		if (G_IS_THEMED_ICON(icon)) {
 			GThemedIcon * themed_icon = G_THEMED_ICON(icon);
 			const gchar * const * names = g_themed_icon_get_names(themed_icon);

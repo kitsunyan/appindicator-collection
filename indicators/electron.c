@@ -42,14 +42,17 @@ static gchar * create_icon_name(AppIndicator * self,
 			app_indicator_set_title(self, override_title);
 		}
 	}
+
 	if (icon_name == NULL) {
 		return NULL;
 	}
 	debug("create icon %s", icon_name);
+
 	if (theme_path == NULL || theme_path[strlen(theme_path)]) {
 		return g_strdup(icon_name);
 	}
 	debug("theme path %s", theme_path);
+
 	gchar * icon_path = g_strdup_printf("%s/%s.png", theme_path, icon_name);
 	debug("icon path %s", icon_name);
 	GdkPixbuf * pixbuf = gdk_pixbuf_new_from_file(icon_path, NULL);
@@ -58,9 +61,11 @@ static gchar * create_icon_name(AppIndicator * self,
 	if (pixbuf == NULL) {
 		return g_strdup(icon_name);
 	}
+
 	guint hash_code = gdk_pixbuf_hash(pixbuf);
 	debug("hash code %08x", hash_code);
 	g_object_unref(pixbuf);
+
 	gchar * new_id = g_strdup(id);
 	for (gchar * c = new_id; *c != '\0'; c++) {
 		*c = tolower(*c);
@@ -74,9 +79,11 @@ static gchar * create_icon_name(AppIndicator * self,
 		}
 	}
 	debug("new id %s", new_id);
+
 	gchar * result = g_strdup_printf("%s-%08x", new_id, hash_code);
 	debug("result %s", result);
 	g_free(new_id);
+
 	return result;
 }
 
@@ -93,28 +100,30 @@ def_override(app_indicator_new_with_path, AppIndicator *,
 def_override_void(app_indicator_set_icon,
 	pass_args(AppIndicator * self, const gchar * icon_name),
 	pass_args(self, new_icon_name),
-	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)), {});
+	pass_args(self, app_indicator_get_id(self), app_indicator_get_icon_theme_path(self)), {});
 
 def_override_void(app_indicator_set_icon_full,
 	pass_args(AppIndicator * self, const gchar * icon_name, const gchar * icon_desc),
 	pass_args(self, new_icon_name, NULL),
-	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)), {});
+	pass_args(self, app_indicator_get_id(self), app_indicator_get_icon_theme_path(self)), {});
 
 def_override_void(app_indicator_set_attention_icon,
 	pass_args(AppIndicator * self, const gchar * icon_name),
 	pass_args(self, new_icon_name),
-	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)), {});
+	pass_args(self, app_indicator_get_id(self), app_indicator_get_icon_theme_path(self)), {});
 
 def_override_void(app_indicator_set_attention_icon_full,
 	pass_args(AppIndicator * self, const gchar * icon_name, const gchar * icon_desc),
 	pass_args(self, new_icon_name, NULL),
-	pass_args(self, app_indicator_get_id (self), app_indicator_get_icon_theme_path(self)), {});
+	pass_args(self, app_indicator_get_id(self), app_indicator_get_icon_theme_path(self)), {});
 
 void app_indicator_set_menu(AppIndicator * self, GtkMenu * menu) {
 	super_lookup_static(app_indicator_set_menu, void, AppIndicator *, GtkMenu *);
 	app_indicator_set_menu_super(self, menu);
+
 	if (menu != NULL && menu_head_is_activate()) {
 		GList * list = gtk_container_get_children(GTK_CONTAINER(menu));
+
 		if (list != NULL) {
 			app_indicator_set_secondary_activate_target(self, list->data);
 			g_list_free(list);

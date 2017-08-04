@@ -186,12 +186,14 @@ static gchar * obtain_result_string;
 static void icon_stub_set_menu_foreach(GtkWidget * widget, gpointer user_data) {
 	if (GTK_IS_MENU_ITEM(widget)) {
 		GtkWidget * submenu = gtk_menu_item_get_submenu(GTK_MENU_ITEM(widget));
+
 		if (submenu != NULL) {
 			gtk_container_foreach(GTK_CONTAINER(submenu),
 				icon_stub_set_menu_foreach, user_data);
 		} else {
 			const gchar * key = "app-indicator-activate-connected";
 			gboolean connected = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(widget), key));
+
 			if (!connected) {
 				g_signal_connect_swapped(widget, "activate",
 					G_CALLBACK(icon_stub_menu_activate), user_data);
@@ -206,6 +208,7 @@ static void icon_stub_set_menu_tooltip(IconStub * icon_stub) {
 	obtain_mode = TRUE;
 	g_signal_emit(G_OBJECT(icon_stub), icon_stub_signals[POPUP_MENU], 0, 0, 0);
 	obtain_mode = FALSE;
+
 	GtkWidget * widget = obtain_result_widget;
 	if (widget != NULL) {
 		if (icon_stub->menu != NULL) {
@@ -213,10 +216,12 @@ static void icon_stub_set_menu_tooltip(IconStub * icon_stub) {
 		}
 		icon_stub->menu = widget;
 		g_object_ref(widget);
+
 		g_signal_emit(G_OBJECT(icon_stub), icon_stub_signals[CONFIGURE_MENU], 0, widget);
 		app_indicator_set_menu(icon_stub->indicator, GTK_MENU(widget));
 		gtk_container_foreach(GTK_CONTAINER(widget), icon_stub_set_menu_foreach, icon_stub);
 	}
+
 	if (icon_stub->query_tooltip) {
 		gboolean has_tooltip = FALSE;
 		obtain_result_widget = NULL;
@@ -225,6 +230,7 @@ static void icon_stub_set_menu_tooltip(IconStub * icon_stub) {
 		g_signal_emit(G_OBJECT(icon_stub), icon_stub_signals[QUERY_TOOLTIP], 0,
 			0, 0, FALSE, icon_stub->tooltip_stub, &has_tooltip);
 		obtain_mode = FALSE;
+
 		g_signal_emit(G_OBJECT(icon_stub), icon_stub_signals[OBTAIN_TOOLTIP], 0,
 			obtain_result_widget, obtain_result_string);
 		g_free(obtain_result_string);
@@ -244,16 +250,19 @@ static void icon_stub_primary_activate(IconStub * icon_stub) {
 
 void icon_stub_configure_menu_prepend_activate(IconStub * icon_stub, GtkWidget * menu) {
 	GList * list = gtk_container_get_children(GTK_CONTAINER(menu));
+
 	if (list != NULL) {
 		GtkWidget * first_item = list->data;
+
 		if (first_item != icon_stub->primary_item) {
 			icon_stub->primary_item = gtk_menu_item_new();
 			gtk_menu_shell_prepend(GTK_MENU_SHELL(menu), icon_stub->primary_item);
 			gtk_widget_show(icon_stub->primary_item);
-			g_signal_connect_swapped(icon_stub->primary_item, "activate",
-				G_CALLBACK(icon_stub_primary_activate), icon_stub);
 			g_object_weak_ref(G_OBJECT(icon_stub->primary_item),
 				icon_stub_primary_item_unref, NULL);
+
+			g_signal_connect_swapped(icon_stub->primary_item, "activate",
+				G_CALLBACK(icon_stub_primary_activate), icon_stub);
 			app_indicator_set_secondary_activate_target(icon_stub->indicator,
 				icon_stub->primary_item);
 		}
@@ -283,10 +292,12 @@ IconStub * icon_stub_new(const gchar * id, const gchar * title, const gchar * de
 	icon_stub->data = data;
 	icon_stub->indicator = app_indicator_new(id, default_icon,
 		APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+	icon_stub->active_loop = g_idle_add(icon_stub_set_menu_tooltip_loop, icon_stub);
+
 	app_indicator_set_title(icon_stub->indicator, title);
 	app_indicator_set_status(icon_stub->indicator, APP_INDICATOR_STATUS_ACTIVE);
 	app_indicator_set_item_is_menu(icon_stub->indicator, FALSE);
-	icon_stub->active_loop = g_idle_add(icon_stub_set_menu_tooltip_loop, icon_stub);
+
 	return icon_stub;
 }
 
@@ -297,6 +308,7 @@ gpointer icon_stub_get_data(IconStub * icon_stub) {
 void icon_stub_set_query_tooltip(IconStub * icon_stub, gboolean query_tooltip) {
 	if (icon_stub->query_tooltip != query_tooltip) {
 		icon_stub->query_tooltip = query_tooltip;
+
 		if (query_tooltip) {
 			if (icon_stub->active_loop != 0) {
 				g_source_remove(icon_stub->active_loop);
@@ -321,6 +333,7 @@ void gtk_menu_popup(GtkMenu * menu, GtkWidget * parent_menu_shell, GtkWidget * p
 	GtkMenuPositionFunc func, gpointer data, guint button, guint32 activate_time) {
 	super_lookup_static(gtk_menu_popup, void,
 		GtkMenu *, GtkWidget *, GtkWidget *, GtkMenuPositionFunc, gpointer, guint, guint32);
+
 	if (obtain_mode) {
 		obtain_result_widget = GTK_WIDGET(menu);
 	} else {
@@ -331,6 +344,7 @@ void gtk_menu_popup(GtkMenu * menu, GtkWidget * parent_menu_shell, GtkWidget * p
 
 void gtk_tooltip_set_text(GtkTooltip * tooltip, const gchar * text) {
 	super_lookup_static(gtk_tooltip_set_text, void, GtkTooltip *, const gchar *);
+
 	if (obtain_mode) {
 		obtain_result_string = text != NULL ? g_strdup(text) : NULL;
 	} else {
@@ -340,6 +354,7 @@ void gtk_tooltip_set_text(GtkTooltip * tooltip, const gchar * text) {
 
 void gtk_tooltip_set_markup(GtkTooltip * tooltip, const gchar * markup) {
 	super_lookup_static(gtk_tooltip_set_markup, void, GtkTooltip *, const gchar *);
+
 	if (obtain_mode) {
 		obtain_result_string = markup != NULL ? g_strdup(markup) : NULL;
 	} else {
@@ -349,6 +364,7 @@ void gtk_tooltip_set_markup(GtkTooltip * tooltip, const gchar * markup) {
 
 void gtk_tooltip_set_custom(GtkTooltip * tooltip, GtkWidget * custom_widget) {
 	super_lookup_static(gtk_tooltip_set_custom, void, GtkTooltip *, GtkWidget *);
+
 	if (obtain_mode) {
 		obtain_result_widget = custom_widget;
 	} else {

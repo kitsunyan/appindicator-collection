@@ -8,16 +8,19 @@ void app_indicator_set_icon_full(AppIndicator * self, const gchar * icon_name, c
 	if (title == NULL || !g_strcmp0(title, "telegram")) {
 		app_indicator_set_title(self, "Telegram Desktop");
 	}
+
 	gboolean highlight = strstr(icon_name, "ico_") == icon_name;
 	gchar * count_str = g_strrstr(icon_name, "_");
 	if (count_str != NULL) {
 		count_str++;
 	}
+
 	gint count = 0;
 	if (count_str > 0) {
 		guint64 count_full = g_ascii_strtoull(count_str, NULL, 10);
 		count = count_full > 1000 ? 1001 : (gint) count_full;
 	}
+
 	const gchar * new_icon_name = count > 0 ? highlight ? "telegram-tray-highlight"
 		: "telegram-tray-new" : "telegram-tray";
 	gchar * text = count > 0 ? count > 1000 ? g_strdup("Unread messages: >1000")
@@ -48,6 +51,7 @@ typedef struct {
 static gboolean setup_activation(gpointer user_data) {
 	MenuLoop * loop = user_data;
 	GList * list = gtk_container_get_children(GTK_CONTAINER(loop->menu));
+
 	if (list != NULL) {
 		IndicatorStorage * storage = g_new0(IndicatorStorage, 1);
 		storage->indicator = loop->indicator;
@@ -55,26 +59,32 @@ static gboolean setup_activation(gpointer user_data) {
 		storage->item_hide = list->next->data;
 		g_object_weak_ref(G_OBJECT(storage->indicator), (GWeakNotify) g_free, storage);
 		g_list_free(list);
+
 		g_object_weak_unref(G_OBJECT(loop->menu), (GWeakNotify) g_source_remove,
 			GUINT_TO_POINTER(loop->handler));
 		g_free(loop);
+
 		g_signal_connect_swapped(storage->item_hide, "notify::sensitive",
 			G_CALLBACK(update_activation), storage);
 		update_activation(storage);
+
 		return G_SOURCE_REMOVE;
 	}
+
 	return G_SOURCE_CONTINUE;
 }
 
 void app_indicator_set_menu(AppIndicator * self, GtkMenu * menu) {
 	super_lookup_static(app_indicator_set_menu, void, AppIndicator *, GtkMenu *);
 	app_indicator_set_menu_super(self, menu);
+
 	MenuLoop * loop = g_new0(MenuLoop, 1);
 	loop->indicator = self;
 	loop->menu = menu;
 	loop->handler = g_idle_add(setup_activation, loop);
 	g_object_weak_ref(G_OBJECT(menu), (GWeakNotify) g_source_remove,
 		GUINT_TO_POINTER(loop->handler));
+
 	app_indicator_set_item_is_menu(self, FALSE);
 }
 

@@ -17,13 +17,16 @@ guint gdk_pixbuf_hash(GdkPixbuf * pixbuf) {
 	if (pixbuf == NULL) {
 		return 0;
 	}
+
 	guint length = 0;
 	guchar * pixels = gdk_pixbuf_get_pixels_with_length(pixbuf, &length);
+
 	guint prime = 31;
 	guint hash_code = 0;
 	for (guint i = 0; i < length; i++) {
 		hash_code = prime * hash_code + pixels[i];
 	}
+
 	return hash_code;
 }
 
@@ -58,14 +61,17 @@ static gchar * insert_xml(gchar * target, const gchar * original, const gchar * 
 GDBusNodeInfo * g_dbus_node_info_new_for_xml(const gchar * xml_data, GError ** error) {
 	super_lookup_static(g_dbus_node_info_new_for_xml, GDBusNodeInfo *, const gchar *, GError **);
 	gchar * target_xml_data = NULL;
+
 	if (xml_data != NULL && strstr(xml_data, "\n<node name=\"/StatusNotifierItem\">\n") != NULL) {
 		if (strstr(xml_data, "name=\"ItemIsMenu\"") == NULL) {
 			target_xml_data = insert_xml(target_xml_data, xml_data, xml_property_item_is_menu);
 		}
+
 		if (strstr(xml_data, "name=\"Activate\"") == NULL) {
 			target_xml_data = insert_xml(target_xml_data, xml_data, xml_method_activate);
 		}
 	}
+
 	if (target_xml_data != NULL) {
 		GDBusNodeInfo * result = g_dbus_node_info_new_for_xml_super(target_xml_data, error);
 		g_free(target_xml_data);
@@ -84,6 +90,7 @@ static void app_indicator_method_call(GDBusConnection * connection, const gchar 
 	if (!g_strcmp0(method_name, "Activate")) {
 		method_name = "SecondaryActivate";
 	}
+
 	app_indicator_method_call_super(connection, sender, object_path, interface_name, method_name,
 		parameters, invocation, user_data);
 }
@@ -95,6 +102,7 @@ static GVariant * app_indicator_get_property(GDBusConnection * connection, const
 		AppIndicator * indicator = APP_INDICATOR(user_data);
 		return g_variant_new_boolean(app_indicator_get_item_is_menu(indicator));
 	}
+
 	app_indicator_get_property_super(connection, sender, object_path, interface_name, property_name,
 		error, user_data);
 }
@@ -107,6 +115,7 @@ guint g_dbus_connection_register_object(GDBusConnection * connection, const gcha
 	super_lookup_static(g_dbus_connection_register_object, guint,
 		GDBusConnection *, const gchar *, GDBusInterfaceInfo *, const GDBusInterfaceVTable *,
 		gpointer, GDestroyNotify, GError **);
+
 	const gchar * prefix = "/org/ayatana/NotificationItem/";
 	if (strstr(object_path, prefix) == object_path) {
 		const gchar * name = &object_path[strlen(prefix)];
@@ -121,6 +130,7 @@ guint g_dbus_connection_register_object(GDBusConnection * connection, const gcha
 			vtable = &vtable_override;
 		}
 	}
+
 	g_dbus_connection_register_object_super(connection, object_path, interface_info, vtable,
 		user_data, user_data_free_func, error);
 }
