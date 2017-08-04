@@ -1,8 +1,6 @@
 #include <common/common.h>
 #include <common/app-indicator.h>
 
-#define pass_args(...) __VA_ARGS__
-
 #define def_override_void(function, args, call, source, extra) \
 void function(args) { \
 	super_lookup_static(function, void, args); \

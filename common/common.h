@@ -22,6 +22,8 @@ extern int local_dlsym;
 	} \
 }
 
+#define pass_args(...) __VA_ARGS__
+
 #define super_lookup_static(name, result, ...) \
 static result (* name##_super)(__VA_ARGS__) = NULL; \
 if (name##_super == NULL) { \

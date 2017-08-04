@@ -134,11 +134,17 @@ gpointer g_object_newv(GType object_type, guint n_parameters, GParameter * param
 }
 
 void gtk_status_icon_set_visible(GtkStatusIcon * status_icon, gboolean visible) {
+	status_icon_check_void(gtk_status_icon_set_visible,
+		pass_args(GtkStatusIcon *, gboolean), pass_args(status_icon, visible));
+
 	IconStub * icon_stub = ICON_STUB(status_icon);
 	icon_stub_set_visible(icon_stub, visible);
 }
 
 void gtk_status_icon_set_blinking(GtkStatusIcon * status_icon, gboolean blinking) {
+	status_icon_check_void(gtk_status_icon_set_blinking,
+		pass_args(GtkStatusIcon *, gboolean), pass_args(status_icon, blinking));
+
 	IconStub * icon_stub = ICON_STUB(status_icon);
 	GajimData * data = icon_stub_get_data(icon_stub);
 
@@ -149,6 +155,9 @@ void gtk_status_icon_set_blinking(GtkStatusIcon * status_icon, gboolean blinking
 }
 
 void gtk_status_icon_set_from_pixbuf(GtkStatusIcon * status_icon, GdkPixbuf * pixbuf) {
+	status_icon_check_void(gtk_status_icon_set_from_pixbuf,
+		pass_args(GtkStatusIcon *, GdkPixbuf *), pass_args(status_icon, pixbuf));
+
 	const gchar * status = lookup_status(pixbuf);
 	if (status == NULL) {
 		status = "offline";

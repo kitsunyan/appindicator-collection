@@ -44,6 +44,9 @@ GtkStatusIcon * gtk_status_icon_new_from_pixbuf(GdkPixbuf * pixbuf) {
 }
 
 void gtk_status_icon_set_tooltip_text(GtkStatusIcon * status_icon, const gchar * text) {
+	status_icon_check_void(gtk_status_icon_set_tooltip_text,
+		pass_args(GtkStatusIcon *, const gchar *), pass_args(status_icon, text));
+
 	IconStub * icon_stub = ICON_STUB(status_icon);
 	HexchatData * data = icon_stub_get_data(icon_stub);
 
@@ -54,6 +57,9 @@ void gtk_status_icon_set_tooltip_text(GtkStatusIcon * status_icon, const gchar *
 }
 
 void gtk_status_icon_set_from_pixbuf(GtkStatusIcon * status_icon, GdkPixbuf * pixbuf) {
+	status_icon_check_void(gtk_status_icon_set_from_pixbuf,
+		pass_args(GtkStatusIcon *, GdkPixbuf *), pass_args(status_icon, pixbuf));
+
 	IconStub * icon_stub = ICON_STUB(status_icon);
 	HexchatData * data = icon_stub_get_data(icon_stub);
 
@@ -65,6 +71,9 @@ void gtk_status_icon_set_from_pixbuf(GtkStatusIcon * status_icon, GdkPixbuf * pi
 }
 
 GdkPixbuf * gtk_status_icon_get_pixbuf(GtkStatusIcon * status_icon) {
+	status_icon_check(gtk_status_icon_get_pixbuf, GdkPixbuf *,
+		pass_args(GtkStatusIcon *), pass_args(status_icon));
+
 	IconStub * icon_stub = ICON_STUB(status_icon);
 	HexchatData * data = icon_stub_get_data(icon_stub);
 	return data->current_pixbuf;

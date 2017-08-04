@@ -52,4 +52,17 @@ void icon_stub_set_visible(IconStub * icon_stub, gboolean visible);
 
 void * icon_stub_dlsym_override(const char * symbol);
 
+#define status_icon_check_void(function, args, call) \
+if (GTK_IS_STATUS_ICON(status_icon)) { \
+	super_lookup_static(function, void, args); \
+	function##_super(call); \
+	return; \
+}
+
+#define status_icon_check(function, result, args, call) \
+if (GTK_IS_STATUS_ICON(status_icon)) { \
+	super_lookup_static(function, result, args); \
+	return function##_super(call); \
+}
+
 #endif
