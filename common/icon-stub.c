@@ -252,21 +252,26 @@ void icon_stub_configure_menu_prepend_activate(IconStub * icon_stub, GtkWidget *
 	GList * list = gtk_container_get_children(GTK_CONTAINER(menu));
 
 	if (list != NULL) {
-		GtkWidget * first_item = list->data;
-
-		if (first_item != icon_stub->primary_item) {
-			icon_stub->primary_item = gtk_menu_item_new();
-			gtk_menu_shell_prepend(GTK_MENU_SHELL(menu), icon_stub->primary_item);
-			gtk_widget_show(icon_stub->primary_item);
-			g_object_weak_ref(G_OBJECT(icon_stub->primary_item),
-				icon_stub_primary_item_unref, NULL);
-
-			g_signal_connect_swapped(icon_stub->primary_item, "activate",
-				G_CALLBACK(icon_stub_primary_activate), icon_stub);
-			app_indicator_set_secondary_activate_target(icon_stub->indicator,
-				icon_stub->primary_item);
+		while (list != NULL) {
+			GtkWidget * first_item = list->data;
+			if (first_item == icon_stub->primary_item) {
+				g_list_free(list);
+				return;
+			}
+			list = list->next;
 		}
 		g_list_free(list);
+
+		icon_stub->primary_item = gtk_menu_item_new();
+		gtk_menu_shell_prepend(GTK_MENU_SHELL(menu), icon_stub->primary_item);
+		gtk_widget_show(icon_stub->primary_item);
+		g_object_weak_ref(G_OBJECT(icon_stub->primary_item),
+			icon_stub_primary_item_unref, NULL);
+
+		g_signal_connect_swapped(icon_stub->primary_item, "activate",
+			G_CALLBACK(icon_stub_primary_activate), icon_stub);
+		app_indicator_set_secondary_activate_target(icon_stub->indicator,
+			icon_stub->primary_item);
 	}
 }
 
