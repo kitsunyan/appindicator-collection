@@ -85,14 +85,14 @@ static gchar * create_icon_name(AppIndicator * self,
 	return result;
 }
 
-AppIndicator * app_indicator_new(const gchar *id, const gchar *icon_name, AppIndicatorCategory category) {
+AppIndicator * app_indicator_new(const gchar * id, const gchar * icon_name, AppIndicatorCategory category) {
 	AppIndicator * indicator = app_indicator_new_extended(id, icon_name, category);
 	apply_head_is_activate(indicator);
 	return indicator;
 }
 
-AppIndicator * app_indicator_new_with_path(const gchar *id, const gchar *icon_name, AppIndicatorCategory category,
-	const gchar *icon_theme_path) {
+AppIndicator * app_indicator_new_with_path(const gchar * id, const gchar * icon_name, AppIndicatorCategory category,
+	const gchar * icon_theme_path) {
 	AppIndicator * indicator = app_indicator_new(id, icon_name, category);
 	app_indicator_set_icon_theme_path(indicator, icon_theme_path);
 	return indicator;

@@ -1,7 +1,7 @@
 #include <common/common.h>
 #include <common/app-indicator.h>
 
-AppIndicator * app_indicator_new(const gchar *id, const gchar *icon_name, AppIndicatorCategory category) {
+AppIndicator * app_indicator_new(const gchar * id, const gchar * icon_name, AppIndicatorCategory category) {
 	return app_indicator_new_extended(id, icon_name, category);
 }
 
