@@ -90,3 +90,18 @@ The following icon names are used:
 - `telegram-tray-highlight` — icon for direct private messages.
 
 Note that `XDG_CURRENT_DESKTOP` variable should be set to `Unity`!
+
+## Additional Features
+
+### Hash Code Mapping
+
+You may notice that a hash code is appended to icon name for `systray` and `electron` applications.
+Hash code can be mapped to human-readable string using `APPINDICATOR_HASH_MAPPING` environment variable.
+
+This variable should contain an array of key-value pairs where key is hash code and value is human-readable string.
+Pairs are divided by `/` character, keys and values are divided by `=` character.
+An extra `*` key is used to transform hash codes which aren't listed in your array.
+
+Example for Riot Desktop application: `6695197e=tray/*=tray-highlight`.
+`riot-tray` will be used for regular icon, `riot-tray-highlight` will be used for other icons
+(for new messages, errors, etc).

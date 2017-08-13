@@ -1,4 +1,5 @@
 #include <common/common.h>
+#include <common/hash-mapping.h>
 #include <common/app-indicator.h>
 
 #define def_override_void(function, args, call, source, extra) \
@@ -78,7 +79,7 @@ static gchar * create_icon_name(AppIndicator * self,
 	}
 	debug("new id %s", new_id);
 
-	gchar * result = g_strdup_printf("%s-%08x", new_id, hash_code);
+	gchar * result = hash_mapping_apply(new_id, hash_code);
 	debug("result %s", result);
 	g_free(new_id);
 

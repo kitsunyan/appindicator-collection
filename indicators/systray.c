@@ -1,4 +1,5 @@
 #include <common/common.h>
+#include <common/hash-mapping.h>
 #include <common/app-indicator.h>
 #include <common/icon-stub.h>
 
@@ -49,7 +50,7 @@ static void update_icon_tooltip(IconStub * icon_stub) {
 	} else if (data->image_string != NULL) {
 		name = g_strdup(data->image_string);
 	} else if (data->image_hash != 0) {
-		name = g_strdup_printf("%s-%08x", data->name, data->image_hash);
+		name = hash_mapping_apply(data->name, data->image_hash);
 	} else {
 		name = g_strdup(data->name);
 	}

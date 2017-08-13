@@ -4,6 +4,7 @@ AM_CPPFLAGS = \
 
 noinst_LTLIBRARIES = \
 	libcommon.la \
+	libhashmapping.la \
 	libappindicator-gtk2.la \
 	libappindicator-gtk3.la \
 	libiconstub-gtk2.la \
@@ -15,6 +16,16 @@ libcommon_la_SOURCES = \
 
 libcommon_la_LIBADD = \
 	-ldl
+
+libhashmapping_la_SOURCES = \
+	hash-mapping.c \
+	hash-mapping.h
+
+libhashmapping_la_CFLAGS = \
+	$(GLIB2_CFLAGS)
+
+libhashmapping_la_LIBADD = \
+	$(GLIB2_LIBS)
 
 libappindicator_gtk2_la_SOURCES = \
 	app-indicator.c \

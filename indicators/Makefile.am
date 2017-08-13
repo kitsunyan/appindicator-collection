@@ -21,6 +21,7 @@ libappindicator_electron_gtk2_la_CFLAGS = \
 
 libappindicator_electron_gtk2_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
+	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk2.la
 
 libappindicator_electron_gtk2_la_LDFLAGS = \
@@ -37,6 +38,7 @@ libappindicator_electron_gtk3_la_CFLAGS = \
 
 libappindicator_electron_gtk3_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
+	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk3.la
 
 libappindicator_electron_gtk3_la_LDFLAGS = \
@@ -109,6 +111,7 @@ libappindicator_systray_gtk2_la_CFLAGS = \
 
 libappindicator_systray_gtk2_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
+	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk2.la \
 	$(top_builddir)/common/libiconstub-gtk2.la
 
@@ -126,6 +129,7 @@ libappindicator_systray_gtk3_la_CFLAGS = \
 
 libappindicator_systray_gtk3_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
+	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk3.la \
 	$(top_builddir)/common/libiconstub-gtk3.la
 
