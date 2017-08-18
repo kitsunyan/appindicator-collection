@@ -7,6 +7,48 @@ installdir = \
 
 install_LTLIBRARIES =
 
+if ENABLE_ACTIVATE
+
+install_LTLIBRARIES += \
+	libappindicator-activate-gtk2.la \
+	libappindicator-activate-gtk3.la
+
+libappindicator_activate_gtk2_la_SOURCES = \
+	activate.c
+
+libappindicator_activate_gtk2_la_CFLAGS = \
+	$(APP_INDICATOR_GTK2_CFLAGS)
+
+libappindicator_activate_gtk2_la_LIBADD = \
+	$(top_builddir)/common/libcommon.la \
+	$(top_builddir)/common/libhashmapping.la \
+	$(top_builddir)/common/libappindicator-gtk2.la
+
+libappindicator_activate_gtk2_la_LDFLAGS = \
+	-avoid-version \
+	-module \
+	-no-undefined \
+	$(PLATFORM_LDFLAGS)
+
+libappindicator_activate_gtk3_la_SOURCES = \
+	activate.c
+
+libappindicator_activate_gtk3_la_CFLAGS = \
+	$(APP_INDICATOR_GTK3_CFLAGS)
+
+libappindicator_activate_gtk3_la_LIBADD = \
+	$(top_builddir)/common/libcommon.la \
+	$(top_builddir)/common/libhashmapping.la \
+	$(top_builddir)/common/libappindicator-gtk3.la
+
+libappindicator_activate_gtk3_la_LDFLAGS = \
+	-avoid-version \
+	-module \
+	-no-undefined \
+	$(PLATFORM_LDFLAGS)
+
+endif
+
 if ENABLE_ELECTRON
 
 install_LTLIBRARIES += \

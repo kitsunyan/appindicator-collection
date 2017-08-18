@@ -21,6 +21,7 @@ AC_DEFUN([AI_ENABLE], [
 	fi
 ])
 
+AI_ENABLE(activate, ACTIVATE)
 AI_ENABLE(electron, ELECTRON)
 AI_ENABLE(gajim, GAJIM)
 AI_ENABLE(hexchat, HEXCHAT)

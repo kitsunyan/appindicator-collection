@@ -20,6 +20,17 @@ Note that this feature may be not supported by your desktop environment.
 
 ## Supported Applications
 
+### Activated Indicators
+
+Configure flag: `--enable-activate`.  
+Shared library (GTK+ 2): `libappindicator-activate-gtk2.so`.  
+Shared library (GTK+ 3): `libappindicator-activate-gtk3.so`.
+
+Generic patch for GTK+ applications with application indicator which adds support for `activate` action.
+The first menu item will be used for this.
+
+This library may be useful if you want to simply add left click support for application indicators.
+
 ### Electron Applications
 
 Configure flag: `--enable-electron`.  
