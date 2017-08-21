@@ -12,8 +12,8 @@ AC_ARG_ENABLE([all], AC_HELP_STRING([--enable-all], [Enable support for all indi
 enabled=
 AC_DEFUN([AI_ENABLE], [
 	AC_ARG_ENABLE([$1], AC_HELP_STRING([--enable-$1], [Enable $1 support]))
-	if test x"$enable_$1" == x"yes" ||
-		{ test x"$enable_all" == x"yes" && ! test x"$enable_$1" == x"no"; }; then
+	if test x"$enable_$1" = x"yes" ||
+		{ test x"$enable_all" = x"yes" && ! test x"$enable_$1" = x"no"; }; then
 		enabled="$enabled $1"
 		AM_CONDITIONAL([ENABLE_$2], [true])
 	else
@@ -45,7 +45,7 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
 AC_ARG_WITH([activate], AS_HELP_STRING([--with-activate], [Enable appindicator left-click activation]))
-if test x"$with_activate" == x"yes"; then
+if test x"$with_activate" = x"yes"; then
 	AC_DEFINE([WITH_ACTIVATE], [], [Enable appindicator left-click activation])
 fi
 
