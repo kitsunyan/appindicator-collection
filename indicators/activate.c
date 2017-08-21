@@ -24,7 +24,22 @@ static gboolean setup_activation(gpointer user_data) {
 	GList * list = gtk_container_get_children(GTK_CONTAINER(loop->menu));
 
 	if (list != NULL) {
-		app_indicator_set_secondary_activate_target(loop->indicator, list->data);
+		gchar * index_str = getenv("ACTIVATE_APPINDICATOR_INDEX");
+
+		if (index_str != NULL && strlen(index_str) > 0) {
+			gint index = g_ascii_strtoll(index_str, NULL, 10);
+			if (index < 0) {
+				index = (gint) g_list_length(list) + index;
+			}
+
+			GtkWidget * widget = g_list_nth_data(list, index);
+			if (widget != NULL) {
+				app_indicator_set_secondary_activate_target(loop->indicator, widget);
+			}
+		}
+
+		g_list_free(list);
+
 		return G_SOURCE_REMOVE;
 	}
 

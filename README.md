@@ -27,7 +27,10 @@ Shared library (GTK+ 2): `libappindicator-activate-gtk2.so`.
 Shared library (GTK+ 3): `libappindicator-activate-gtk3.so`.
 
 Generic patch for GTK+ applications with application indicator which adds support for `activate` action.
-The first menu item will be used for this.
+This will work if your application provide a secondary activation method.
+
+You can also specify the index of menu item which will be used as `activate` target using `ACTIVATE_APPINDICATOR_INDEX`
+environment variable. Negative index may be used to select menu item from the end of menu.
 
 This library may be useful if you want to simply add left click support for application indicators.
 
