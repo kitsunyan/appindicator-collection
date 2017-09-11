@@ -5,6 +5,8 @@
 
 extern gboolean app_indicator_falling_back;
 
+GType app_indicator_extended_type();
+
 AppIndicator * app_indicator_new_extended(const gchar * id, const gchar * icon_name,
 	AppIndicatorCategory category);
 

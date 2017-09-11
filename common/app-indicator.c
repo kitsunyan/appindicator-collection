@@ -23,6 +23,10 @@ G_DEFINE_TYPE(Extended, extended, APP_INDICATOR_TYPE);
 #define EXTENDED(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), EXTENDED_TYPE, Extended))
 #define IS_EXTENDED(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), EXTENDED_TYPE))
 
+GType app_indicator_extended_type() {
+	return EXTENDED_TYPE;
+}
+
 static GtkStatusIcon * extended_fallback(AppIndicator * indicator) {
 	app_indicator_falling_back = TRUE;
 	APP_INDICATOR_CLASS(extended_parent_class)->fallback(indicator);

@@ -13,6 +13,18 @@ AppIndicator * app_indicator_new_with_path(const gchar * id, const gchar * icon_
 	return indicator;
 }
 
+gpointer g_object_newv(GType object_type, guint n_parameters, GParameter * parameters) {
+	status_icon_check_init(g_object_newv, gpointer,
+		pass_args(GType, guint, GParameter *), pass_args(object_type, n_parameters, parameters));
+
+	if (object_type == APP_INDICATOR_TYPE) {
+		object_type = app_indicator_extended_type();
+	}
+
+	super_lookup_static(g_object_newv, gpointer, GType, guint, GParameter *);
+	return g_object_newv_super(object_type, n_parameters, parameters);
+}
+
 typedef struct {
 	AppIndicator * indicator;
 	GtkMenu * menu;
@@ -62,6 +74,9 @@ void app_indicator_set_menu(AppIndicator * self, GtkMenu * menu) {
 
 void * dlsym_override(const char * symbol) {
 	dlsym_override_library(app_indicator);
+	dlsym_compare(app_indicator_new);
+	dlsym_compare(app_indicator_new_with_path);
+	dlsym_compare(g_object_newv);
 	dlsym_compare(app_indicator_set_menu);
 	return NULL;
 }
