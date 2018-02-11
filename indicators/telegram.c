@@ -13,15 +13,18 @@ void app_indicator_set_icon_full(AppIndicator * self, const gchar * icon_name, c
 		app_indicator_set_title(self, "Telegram Desktop");
 	}
 
-	gboolean highlight = strstr(icon_name, "ico_") == icon_name;
-	gchar * count_str = g_strrstr(icon_name, "_");
-	if (count_str != NULL) {
-		count_str++;
+	const gchar * icon_name_short = g_strrstr(icon_name, "/");
+	if (icon_name_short != NULL) {
+		icon_name_short = &icon_name_short[1];
+	} else {
+		icon_name_short = icon_name;
 	}
+	gboolean highlight = strstr(icon_name_short, "ico_") == icon_name_short;
 
 	gint count = 0;
-	if (count_str > 0) {
-		guint64 count_full = g_ascii_strtoull(count_str, NULL, 10);
+	gchar * count_str = g_strrstr(icon_name, "_");
+	if (count_str != NULL) {
+		guint64 count_full = g_ascii_strtoull(&count_str[1], NULL, 10);
 		count = count_full > 1000 ? 1001 : (gint) count_full;
 	}
 
