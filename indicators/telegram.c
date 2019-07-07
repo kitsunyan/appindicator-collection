@@ -19,7 +19,7 @@ void app_indicator_set_icon_full(AppIndicator * self, const gchar * icon_name, c
 	} else {
 		icon_name_short = icon_name;
 	}
-	gboolean highlight = strstr(icon_name_short, "ico_") == icon_name_short;
+	gboolean highlight = strstr(icon_name_short, "icon_") == icon_name_short;
 
 	gint count = 0;
 	gchar * count_str = g_strrstr(icon_name, "_");
