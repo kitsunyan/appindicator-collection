@@ -22,7 +22,8 @@ Note that this feature may be not supported by your desktop environment.
 
 ### Activated Indicators
 
-Configure flag: `--enable-activate`.  
+Configure flag (GTK+ 2): `--enable-activate-gtk2`.  
+Configure flag (GTK+ 3): `--enable-activate-gtk3`.  
 Shared library (GTK+ 2): `libappindicator-activate-gtk2.so`.  
 Shared library (GTK+ 3): `libappindicator-activate-gtk3.so`.
 
@@ -36,7 +37,8 @@ This library may be useful if you want to simply add left click support for appl
 
 ### Electron Applications
 
-Configure flag: `--enable-electron`.  
+Configure flag (GTK+ 2): `--enable-electron-gtk2`.  
+Configure flag (GTK+ 3): `--enable-electron-gtk3`.  
 Shared library (GTK+ 2): `libappindicator-electron-gtk2.so`.  
 Shared library (GTK+ 3): `libappindicator-electron-gtk3.so`.
 
@@ -79,7 +81,8 @@ The following icon names are used:
 
 ### System Tray
 
-Configure flag: `--enable-systray`.  
+Configure flag (GTK+ 2): `--enable-systray-gtk2`.  
+Configure flag (GTK+ 2): `--enable-systray-gtk3`.  
 Shared library (GTK+ 2): `libappindicator-systray-gtk2.so`.  
 Shared library (GTK+ 3): `libappindicator-systray-gtk3.so`.
 

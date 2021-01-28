@@ -7,11 +7,10 @@ installdir = \
 
 install_LTLIBRARIES =
 
-if ENABLE_ACTIVATE
+if ENABLE_ACTIVATE_GTK2
 
 install_LTLIBRARIES += \
-	libappindicator-activate-gtk2.la \
-	libappindicator-activate-gtk3.la
+	libappindicator-activate-gtk2.la
 
 libappindicator_activate_gtk2_la_SOURCES = \
 	activate.c
@@ -29,6 +28,13 @@ libappindicator_activate_gtk2_la_LDFLAGS = \
 	-module \
 	-no-undefined \
 	$(PLATFORM_LDFLAGS)
+
+endif
+
+if ENABLE_ACTIVATE_GTK3
+
+install_LTLIBRARIES += \
+	libappindicator-activate-gtk3.la
 
 libappindicator_activate_gtk3_la_SOURCES = \
 	activate.c
@@ -49,11 +55,10 @@ libappindicator_activate_gtk3_la_LDFLAGS = \
 
 endif
 
-if ENABLE_ELECTRON
+if ENABLE_ELECTRON_GTK2
 
 install_LTLIBRARIES += \
-	libappindicator-electron-gtk2.la \
-	libappindicator-electron-gtk3.la
+	libappindicator-electron-gtk2.la
 
 libappindicator_electron_gtk2_la_SOURCES = \
 	electron.c
@@ -71,6 +76,13 @@ libappindicator_electron_gtk2_la_LDFLAGS = \
 	-module \
 	-no-undefined \
 	$(PLATFORM_LDFLAGS)
+
+endif
+
+if ENABLE_ELECTRON_GTK3
+
+install_LTLIBRARIES += \
+	libappindicator-electron-gtk3.la
 
 libappindicator_electron_gtk3_la_SOURCES = \
 	electron.c
@@ -139,11 +151,10 @@ libappindicator_hexchat_la_LDFLAGS = \
 
 endif
 
-if ENABLE_SYSTRAY
+if ENABLE_SYSTRAY_GTK2
 
 install_LTLIBRARIES += \
-	libappindicator-systray-gtk2.la \
-	libappindicator-systray-gtk3.la
+	libappindicator-systray-gtk2.la
 
 libappindicator_systray_gtk2_la_SOURCES = \
 	systray.c
@@ -162,6 +173,13 @@ libappindicator_systray_gtk2_la_LDFLAGS = \
 	-module \
 	-no-undefined \
 	$(PLATFORM_LDFLAGS)
+
+endif
+
+if ENABLE_SYSTRAY_GTK3
+
+install_LTLIBRARIES += \
+	libappindicator-systray-gtk3.la
 
 libappindicator_systray_gtk3_la_SOURCES = \
 	systray.c
