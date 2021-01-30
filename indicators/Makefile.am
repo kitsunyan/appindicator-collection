@@ -2,224 +2,177 @@ AM_CPPFLAGS = \
 	-I${top_srcdir} \
 	$(PLATFORM_CPPFLAGS)
 
+AM_LDFLAGS = \
+	-avoid-version \
+	-module \
+	-no-undefined \
+	-shared \
+	$(PLATFORM_LDFLAGS)
+
 installdir = \
-	$(libdir)
+	$(libdir)/indicators
 
 install_LTLIBRARIES =
 
 if ENABLE_ACTIVATE_GTK2
 
 install_LTLIBRARIES += \
-	libappindicator-activate-gtk2.la
+	libactivate-gtk2.la
 
-libappindicator_activate_gtk2_la_SOURCES = \
+libactivate_gtk2_la_SOURCES = \
 	activate.c
 
-libappindicator_activate_gtk2_la_CFLAGS = \
+libactivate_gtk2_la_CFLAGS = \
 	$(APP_INDICATOR_GTK2_CFLAGS)
 
-libappindicator_activate_gtk2_la_LIBADD = \
+libactivate_gtk2_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
 	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk2.la
-
-libappindicator_activate_gtk2_la_LDFLAGS = \
-	-avoid-version \
-	-module \
-	-no-undefined \
-	$(PLATFORM_LDFLAGS)
 
 endif
 
 if ENABLE_ACTIVATE_GTK3
 
 install_LTLIBRARIES += \
-	libappindicator-activate-gtk3.la
+	libactivate-gtk3.la
 
-libappindicator_activate_gtk3_la_SOURCES = \
+libactivate_gtk3_la_SOURCES = \
 	activate.c
 
-libappindicator_activate_gtk3_la_CFLAGS = \
+libactivate_gtk3_la_CFLAGS = \
 	$(APP_INDICATOR_GTK3_CFLAGS)
 
-libappindicator_activate_gtk3_la_LIBADD = \
+libactivate_gtk3_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
 	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk3.la
-
-libappindicator_activate_gtk3_la_LDFLAGS = \
-	-avoid-version \
-	-module \
-	-no-undefined \
-	$(PLATFORM_LDFLAGS)
 
 endif
 
 if ENABLE_ELECTRON_GTK2
 
 install_LTLIBRARIES += \
-	libappindicator-electron-gtk2.la
+	libelectron-gtk2.la
 
-libappindicator_electron_gtk2_la_SOURCES = \
+libelectron_gtk2_la_SOURCES = \
 	electron.c
 
-libappindicator_electron_gtk2_la_CFLAGS = \
+libelectron_gtk2_la_CFLAGS = \
 	$(APP_INDICATOR_GTK2_CFLAGS)
 
-libappindicator_electron_gtk2_la_LIBADD = \
+libelectron_gtk2_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
 	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk2.la
-
-libappindicator_electron_gtk2_la_LDFLAGS = \
-	-avoid-version \
-	-module \
-	-no-undefined \
-	$(PLATFORM_LDFLAGS)
 
 endif
 
 if ENABLE_ELECTRON_GTK3
 
 install_LTLIBRARIES += \
-	libappindicator-electron-gtk3.la
+	libelectron-gtk3.la
 
-libappindicator_electron_gtk3_la_SOURCES = \
+libelectron_gtk3_la_SOURCES = \
 	electron.c
 
-libappindicator_electron_gtk3_la_CFLAGS = \
+libelectron_gtk3_la_CFLAGS = \
 	$(APP_INDICATOR_GTK3_CFLAGS)
 
-libappindicator_electron_gtk3_la_LIBADD = \
+libelectron_gtk3_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
 	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk3.la
-
-libappindicator_electron_gtk3_la_LDFLAGS = \
-	-avoid-version \
-	-module \
-	-no-undefined \
-	$(PLATFORM_LDFLAGS)
 
 endif
 
 if ENABLE_GAJIM
 
 install_LTLIBRARIES += \
-	libappindicator-gajim.la
+	libgajim.la
 
-libappindicator_gajim_la_SOURCES = \
+libgajim_la_SOURCES = \
 	gajim.c
 
-libappindicator_gajim_la_CFLAGS = \
+libgajim_la_CFLAGS = \
 	$(APP_INDICATOR_GTK2_CFLAGS)
 
-libappindicator_gajim_la_LIBADD = \
+libgajim_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
 	$(top_builddir)/common/libappindicator-gtk2.la \
 	$(top_builddir)/common/libiconstub-gtk2.la
-
-libappindicator_gajim_la_LDFLAGS = \
-	-avoid-version \
-	-module \
-	-no-undefined \
-	$(PLATFORM_LDFLAGS)
 
 endif
 
 if ENABLE_HEXCHAT
 
 install_LTLIBRARIES += \
-	libappindicator-hexchat.la
+	libhexchat.la
 
-libappindicator_hexchat_la_SOURCES = \
+libhexchat_la_SOURCES = \
 	hexchat.c
 
-libappindicator_hexchat_la_CFLAGS = \
+libhexchat_la_CFLAGS = \
 	$(APP_INDICATOR_GTK2_CFLAGS)
 
-libappindicator_hexchat_la_LIBADD = \
+libhexchat_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
 	$(top_builddir)/common/libappindicator-gtk2.la \
 	$(top_builddir)/common/libiconstub-gtk2.la
-
-libappindicator_hexchat_la_LDFLAGS = \
-	-avoid-version \
-	-module \
-	-no-undefined \
-	$(PLATFORM_LDFLAGS)
 
 endif
 
 if ENABLE_SYSTRAY_GTK2
 
 install_LTLIBRARIES += \
-	libappindicator-systray-gtk2.la
+	libsystray-gtk2.la
 
-libappindicator_systray_gtk2_la_SOURCES = \
+libsystray_gtk2_la_SOURCES = \
 	systray.c
 
-libappindicator_systray_gtk2_la_CFLAGS = \
+libsystray_gtk2_la_CFLAGS = \
 	$(APP_INDICATOR_GTK2_CFLAGS)
 
-libappindicator_systray_gtk2_la_LIBADD = \
+libsystray_gtk2_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
 	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk2.la \
 	$(top_builddir)/common/libiconstub-gtk2.la
-
-libappindicator_systray_gtk2_la_LDFLAGS = \
-	-avoid-version \
-	-module \
-	-no-undefined \
-	$(PLATFORM_LDFLAGS)
 
 endif
 
 if ENABLE_SYSTRAY_GTK3
 
 install_LTLIBRARIES += \
-	libappindicator-systray-gtk3.la
+	libsystray-gtk3.la
 
-libappindicator_systray_gtk3_la_SOURCES = \
+libsystray_gtk3_la_SOURCES = \
 	systray.c
 
-libappindicator_systray_gtk3_la_CFLAGS = \
+libsystray_gtk3_la_CFLAGS = \
 	$(APP_INDICATOR_GTK3_CFLAGS)
 
-libappindicator_systray_gtk3_la_LIBADD = \
+libsystray_gtk3_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
 	$(top_builddir)/common/libhashmapping.la \
 	$(top_builddir)/common/libappindicator-gtk3.la \
 	$(top_builddir)/common/libiconstub-gtk3.la
-
-libappindicator_systray_gtk3_la_LDFLAGS = \
-	-avoid-version \
-	-module \
-	-no-undefined \
-	$(PLATFORM_LDFLAGS)
 
 endif
 
 if ENABLE_TELEGRAM
 
 install_LTLIBRARIES += \
-	libappindicator-telegram.la
+	libtelegram.la
 
-libappindicator_telegram_la_SOURCES = \
+libtelegram_la_SOURCES = \
 	telegram.c
 
-libappindicator_telegram_la_CFLAGS = \
+libtelegram_la_CFLAGS = \
 	$(APP_INDICATOR_GTK3_CFLAGS)
 
-libappindicator_telegram_la_LIBADD = \
+libtelegram_la_LIBADD = \
 	$(top_builddir)/common/libcommon.la \
 	$(top_builddir)/common/libappindicator-gtk3.la
-
-libappindicator_telegram_la_LDFLAGS = \
-	-avoid-version \
-	-module \
-	-no-undefined \
-	$(PLATFORM_LDFLAGS)
 
 endif

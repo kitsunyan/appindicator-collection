@@ -4,13 +4,13 @@ This project provides some libraries loaded with `LD_PRELOAD` which allow you to
 
 ## Building and Installing
 
-Run `./autogen && ./configure --prefix=/usr/local && make && sudo make install` to install libraries.
+Run `./autogen.sh --prefix=/usr/local && make && sudo make install` to install libraries.
 
 You should also pass a list of desired applications to configure script (see below). By default all applications are excluded.
 
 In order to enable modifications, you should run your application with `LD_PRELOAD` environment variable set to the path of shared library.
 
-For example: `LD_PRELOAD=/usr/local/lib/libappindicator-hexchat.so hexchat`.
+For example: `LD_PRELOAD=/usr/local/lib/indicators/libhexchat.so hexchat`.
 
 ## Left-Click Activation
 
@@ -24,8 +24,8 @@ Note that this feature may be not supported by your desktop environment.
 
 Configure flag (GTK+ 2): `--enable-activate-gtk2`.  
 Configure flag (GTK+ 3): `--enable-activate-gtk3`.  
-Shared library (GTK+ 2): `libappindicator-activate-gtk2.so`.  
-Shared library (GTK+ 3): `libappindicator-activate-gtk3.so`.
+Shared library (GTK+ 2): `libactivate-gtk2.so`.  
+Shared library (GTK+ 3): `libactivate-gtk3.so`.
 
 Generic patch for GTK+ applications with application indicator which adds support for `activate` action.
 This will work if your application provide a secondary activation method.
@@ -39,8 +39,8 @@ This library may be useful if you want to simply add left click support for appl
 
 Configure flag (GTK+ 2): `--enable-electron-gtk2`.  
 Configure flag (GTK+ 3): `--enable-electron-gtk3`.  
-Shared library (GTK+ 2): `libappindicator-electron-gtk2.so`.  
-Shared library (GTK+ 3): `libappindicator-electron-gtk3.so`.
+Shared library (GTK+ 2): `libelectron-gtk2.so`.  
+Shared library (GTK+ 3): `libelectron-gtk3.so`.
 
 A hash sum is computed for each icon and appended to icon name. This allows you to replace icons using icon themes.
 
@@ -54,7 +54,7 @@ Environment variables:
 ### Gajim
 
 Configure flag: `--enable-gajim`.  
-Shared library: `libappindicator-gajim.so`.
+Shared library: `libgajim.so`.
 
 This patch replaces system tray icon with application indicator.
 
@@ -70,7 +70,7 @@ For example: `gajim-tray-online-highlight`.
 ### HexChat
 
 Configure flag: `--enable-hexchat`.  
-Shared library: `libappindicator-hexchat.so`.
+Shared library: `libhexchat.so`.
 
 This patch replaces system tray icon with application indicator.
 
@@ -83,8 +83,8 @@ The following icon names are used:
 
 Configure flag (GTK+ 2): `--enable-systray-gtk2`.  
 Configure flag (GTK+ 2): `--enable-systray-gtk3`.  
-Shared library (GTK+ 2): `libappindicator-systray-gtk2.so`.  
-Shared library (GTK+ 3): `libappindicator-systray-gtk3.so`.
+Shared library (GTK+ 2): `libsystray-gtk2.so`.  
+Shared library (GTK+ 3): `libsystray-gtk3.so`.
 
 Generic patch for GTK+ applications which replaces systray with application indicator.
 
@@ -96,7 +96,7 @@ This library may be useful for applications with static systray icons.
 ### Telegram Desktop
 
 Configure flag: `--enable-telegram`.  
-Shared library: `libappindicator-telegram.so`.
+Shared library: `libtelegram.so`.
 
 The counter was moved to the tooltip.
 
